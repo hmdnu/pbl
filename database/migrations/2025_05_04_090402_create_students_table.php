@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('graduation_date');
             $table->foreignId('program_study_id')->constrained('program_studies', 'id');
-            $table->boolean('hasFilledSurvey')->default(false);
+            $table->boolean('has_filled_survey')->default(false);
             $table->timestamps();
         });
     }
