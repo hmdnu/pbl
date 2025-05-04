@@ -9,6 +9,11 @@ use App\Http\Controllers\StudyProgramController;
 
 Route::get('/', fn() => view('welcome'));
 
+// TODO
+// alumni/alumno user survey routes -> view, post
+// protected route for admin
+// email otp route
+
 Route::resource('study-program', StudyProgramController::class);
 Route::resource('admin', AdminController::class);
 Route::resource('student', StudentController::class);
