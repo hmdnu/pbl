@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
+<head>
+    @stack('heads')
+</head>
+
 @section('content')
     @include('partials.sidebar')
-    @yield('admin-content')
+
+    <div class="container">
+        @yield('admin-content')
+    </div>
 @endsection

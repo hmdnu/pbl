@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfessionCategoryController;
 use App\Http\Controllers\ProfessionController;
 use App\Http\Controllers\StudentController;
@@ -14,6 +15,7 @@ Route::get('/', fn() => view('welcome'));
 // protected route for admin
 // email otp route
 
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::resource('study-program', StudyProgramController::class);
 Route::resource('admin', AdminController::class);
 Route::resource('student', StudentController::class);
