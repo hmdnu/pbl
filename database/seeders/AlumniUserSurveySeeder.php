@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\AlumniUserSurvey;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,7 @@ class AlumniUserSurveySeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        AlumniUserSurvey::factory()->count(10)->create();
+
     }
 }
