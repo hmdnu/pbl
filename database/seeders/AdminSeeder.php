@@ -17,12 +17,12 @@ class AdminSeeder extends Seeder
         $admin = [
             [
                 'nidn' => '1998242526',
-                'nama' => 'Wahyu',
-                'password' => Hash::make('12345') 
+                'name' => 'Wahyu',
+                'password' => Hash::make('12345')
             ],
             [
                 'nidn' => '1998222324',
-                'nama' => 'Astrid',
+                'name' => 'Astrid',
                 'password' => Hash::make('12345')
             ]
         ];
