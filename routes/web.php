@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CrudTestController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfessionCategoryController;
 use App\Http\Controllers\ProfessionController;
 use App\Http\Controllers\StudentController;
+use App\Http\Middleware\AdminAuth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudyProgramController;
 
@@ -21,3 +24,5 @@ Route::middleware([AdminAuth::class])->group(function () {
     Route::resource('profession', ProfessionController::class);
     Route::resource('profession-category', ProfessionCategoryController::class);
 });
+
+Route::resource('test-crud', CrudTestController::class);
