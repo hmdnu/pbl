@@ -30,7 +30,6 @@ return new class extends Migration {
 
             $table->string('supervisor_name');
             $table->string('supervisor_position');
-            $table->string('supervisor_phone');
             $table->string('supervisor_email');
 
             $table->timestamps();
