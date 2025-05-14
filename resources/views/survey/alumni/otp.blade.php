@@ -12,25 +12,25 @@
 
             <div class="mb-3">
                 <label for="nama" class="form-label text-white">Name</label>
-                <input type="text" class="form-control bg-light border-0" id="nama" name="nama" placeholder="Masukkan Nama">
+                <input type="text" class="form-control bg-light border-0" id="nama" name="nama" placeholder="Enter your name">
             </div>
 
             <div class="mb-3">
                 <label for="nim" class="form-label text-white">NIM</label>
-                <input type="text" class="form-control bg-light border-0" id="nim" name="nim" placeholder="Masukkan NIM">
+                <input type="text" class="form-control bg-light border-0" id="nim" name="nim" placeholder="Enter your NIM">
             </div>
 
             <div class="mb-3">
                 <label for="email" class="form-label text-white">Email</label>
                 <div class="d-flex gap-2">
-                    <input type="email" class="form-control bg-light border-0" id="email" name="email" placeholder="Masukkan Email">
-                    <button type="button" class="btn btn-dark px-3" onclick="kirimOTP()">Kirim otp</button>
+                    <input type="email" class="form-control bg-light border-0" id="email" name="email" placeholder="Enter your Email">
+                    <button type="button" class="btn btn-dark px-3" onclick="kirimOTP()">Send OTP</button>
                 </div>
             </div>
 
             <div class="mb-4">
                 <label for="otp" class="form-label text-white">OTP</label>
-                <input type="text" class="form-control bg-light border-0" id="otp" name="otp" placeholder="Masukkan Kode OTP">
+                <input type="text" class="form-control bg-light border-0" id="otp" name="otp" placeholder="Enter OTP code">
             </div>
 
             <button type="submit" class="btn btn-dark w-100">Submit</button>
