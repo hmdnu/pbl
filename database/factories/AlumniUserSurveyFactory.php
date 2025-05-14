@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Student;
+use App\Models\AlumniEvaluation;
+use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +20,14 @@ class AlumniUserSurveyFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->name,
+            'institution_type' => $this->faker->randomElement(['Pemerintah', 'Swasta', 'BUMN', 'Lainnya']),
+            'institution_name' => $this->faker->company,
+            'position' => $this->faker->jobTitle,
+            'email' => $this->faker->unique()->safeEmail,
+            'student_nim' => Student::inRandomOrder()->first()->nim,
+            'alumni_evaluation_id' => AlumniEvaluation::inRandomOrder()->first()->id,
+            'curriculum_suggestions' => $this->faker->paragraph,
         ];
     }
 }
