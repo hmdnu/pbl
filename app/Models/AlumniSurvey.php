@@ -23,7 +23,6 @@ class AlumniSurvey extends Model
         'first_agency_work_date',
         'supervisor_name',
         'supervisor_position',
-        'supervisor_phone',
         'supervisor_email',
     ];
 
