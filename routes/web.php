@@ -10,6 +10,10 @@ use App\Http\Controllers\StudyProgramController;
 
 Route::get('/', fn() => view('welcome'));
 
+Route::get('/login', function () {
+    return view('admin.login');
+});
+
 // TODO
 // alumni/alumno user survey routes -> view, post
 // protected route for admin
