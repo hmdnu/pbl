@@ -61,4 +61,15 @@ class StudentController extends Controller
     {
         //
     }
+
+     public function showform(){
+        return view('survey.alumni.form');
+    }
+
+    public function submit(Request $request)
+    {
+    // Validasi & simpan data di sini
+    return redirect()->back()->with('success', 'Data berhasil dikirim.');
+    }
 }
+
