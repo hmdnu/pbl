@@ -1,3 +1,4 @@
+@extends('layouts.admin')
 
 @section('content')
 <!DOCTYPE html>
@@ -59,15 +60,19 @@
 <body>
     <div class="d-flex justify-content-center align-items-center vh-100">
         <div class="login-container">
-            <form method="POST" action="">
+            <form method="POST" action="/post-login">
+                @csrf
                 <div class="mb-3">
-                    <input type="text" class="form-control" name="nip" placeholder="nip" required>
+                    <input type="text" class="form-control" name="nidn" placeholder="nidn" value="{{ old('nidn') }}" required>
+                    @error('credential')
+                    <div class="text-danger mt-1">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-3 position-relative">
                     <input type="password" class="form-control" id="password" name="password" placeholder="password" required>
                     <i class="bi bi-eye-slash show-password" onclick="togglePassword()"></i>
                 </div>
-                <a href="{{ route('dashboard') }}" class="btn btn-login mt-3">Login</a>
+                <button type="submit" class="btn btn-login mt-3">Login</button>
             </form>
         </div>
     </div>
