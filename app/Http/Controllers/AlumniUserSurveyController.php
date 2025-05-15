@@ -19,7 +19,7 @@ class AlumniUserSurveyController extends Controller
     public function submitAgreement(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|email',
             'otp' => 'required|string',
         ]);
@@ -30,22 +30,22 @@ class AlumniUserSurveyController extends Controller
     public function submitSurvey(Request $request)
     {
         $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'jenis_instansi' => 'required|string',
-            'nama_instansi' => 'required|string|max:255',
-            'jabatan' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'institution_type' => 'required|string',
+            'institution_name' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
             'email' => 'required|email',
-            'nim_mahasiswa' => 'required|string|max:50',
+            'student_nim' => 'required|string|max:50',
 
-            'kerjasama_tim' => 'required',
-            'keahlian_ti' => 'required',
-            'bahasa_asing' => 'required',
-            'komunikasi' => 'required',
-            'pengembangan_diri' => 'required',
-            'kepemimpinan' => 'required',
-            'etos_kerja' => 'required',
-            'kompetensi_kurang' => 'required',
-            'saran_kurikulum' => 'required|string',
+            'teamwork' => 'required',
+            'it_expertise' => 'required',
+            'foreign_language' => 'required',
+            'communication' => 'required',
+            'self_development' => 'required',
+            'leadership' => 'required',
+            'work_ethic' => 'required',
+            'unmet_competencies' => 'required',
+            'curriculum_suggestion' => 'required|string',
         ]);
 
         return "ok";
