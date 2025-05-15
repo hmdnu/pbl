@@ -22,7 +22,6 @@ Route::middleware([AdminAuth::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('study-program', StudyProgramController::class);
     Route::resource('admin', AdminController::class);
-    Route::resource('student', StudentController::class);
     Route::resource('profession', ProfessionController::class);
     Route::resource('profession-category', ProfessionCategoryController::class);
 });
@@ -46,3 +45,5 @@ Route::prefix('/survey')->group(function () {
         Route::post('/form', [AlumniSurveyController::class, 'submitForm']);
     });
 });
+
+Route::resource('student', StudentController::class);
