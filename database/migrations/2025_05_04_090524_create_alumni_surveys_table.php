@@ -23,10 +23,10 @@ return new class extends Migration {
             $table->date('first_work_date');
             $table->integer('waiting_period');
 
-            $table->string('agency_type');
-            $table->string('agency_name');
-            $table->string('agency_location');
-            $table->date('first_agency_work_date');
+            $table->string('institution_type');
+            $table->string('institution_name');
+            $table->string('institution_location');
+            $table->date('first_institution_work_date');
 
             $table->string('supervisor_name');
             $table->string('supervisor_position');

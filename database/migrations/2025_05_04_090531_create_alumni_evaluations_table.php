@@ -18,8 +18,8 @@ return new class extends Migration {
 
             $table->string('teamwork'); // kerjasama_tim
             $table->string('it_expertise'); // keahlian_di_bidang_ti
-            $table->string('foreign_language_skills'); // kemampuan_berbahasa_asing
-            $table->string('communication_skills'); // kemampuan_berkomunikasi
+            $table->string('foreign_language'); // kemampuan_berbahasa_asing
+            $table->string('communication'); // kemampuan_berkomunikasi
             $table->string('self_development'); // pengembangan_diri
             $table->string('leadership'); // kepemimpinan
             $table->string('work_ethic'); // etos_kerja

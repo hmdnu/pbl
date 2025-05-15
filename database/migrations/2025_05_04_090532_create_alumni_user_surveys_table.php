@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->foreign('student_nim')->references('nim')->on('students');
 
             $table->foreignId('alumni_evaluation_id')->constrained('alumni_evaluations'); // penilaian_alumni_id
-            $table->text('curriculum_suggestions'); // saran_kurikulum
+            $table->text('curriculum_suggestion'); // saran_kurikulum
 
             $table->timestamps();
         });
