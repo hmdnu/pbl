@@ -12,11 +12,10 @@ use App\Http\Middleware\AdminAuth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudyProgramController;
 use App\Http\Controllers\AlumniUserSurveyController;
-use App\Http\Controllers\EmailOtpController;
 
 Route::get('/', fn() => view('welcome'));
 Route::get("/login", fn() => view('admin.login'));
-Route::post("/post-login", [AuthController::class, 'login']);
+Route::post("/login", [AuthController::class, 'login']);
 Route::get("/logout", [AuthController::class, "logout"]);
 
 Route::middleware([AdminAuth::class])->group(function () {
