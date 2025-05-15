@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AlumniSurveyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CrudTestController;
 use App\Http\Controllers\DashboardController;
@@ -11,6 +12,7 @@ use App\Http\Middleware\AdminAuth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudyProgramController;
 use App\Http\Controllers\AlumniUserSurveyController;
+use App\Http\Controllers\EmailOtpController;
 
 Route::get('/', fn() => view('welcome'));
 Route::get("/login", fn() => view('admin.login'));
@@ -29,15 +31,19 @@ Route::middleware([AdminAuth::class])->group(function () {
 Route::resource('test-crud', CrudTestController::class);
 
 Route::prefix('/survey')->group(function () {
+
     Route::prefix('/alumni-user')->group(function () {
         Route::get('/agreement', [AlumniUserSurveyController::class, 'showAgreement']);
-        Route::post('/agreement', [AlumniUserSurveyController::class, 'submitAgreement'])->name('survey.agreement.submit');
+        Route::post('/agreement', [AlumniUserSurveyController::class, 'submitAgreement']);
 
-        Route::get('/form', [AlumniUserSurveyController::class, 'showForm'])->name('survey.form');
-        Route::post('/form/submit', [AlumniUserSurveyController::class, 'submitSurvey'])->name('survey.form.submit');
+        Route::get('/form', [AlumniUserSurveyController::class, 'showForm']);
+        Route::post('/form/submit', [AlumniUserSurveyController::class, 'submitSurvey']);
     });
 
     Route::prefix('/alumni')->group(function () {
-
+        Route::get('/validation', [AlumniSurveyController::class, 'showValidation']);
+        Route::post('/validation', [AlumniSurveyController::class, 'submitValidation']);
+        Route::get('/form', [AlumniSurveyController::class, 'showform']);
+        Route::post('/form', [AlumniSurveyController::class, 'submitForm']);
     });
 });
