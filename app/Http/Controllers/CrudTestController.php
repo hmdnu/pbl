@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class StudentController extends Controller
+class CrudTestController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view("test-crud.index");
     }
 
     /**
@@ -27,7 +27,7 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return "create " . $request->input("name");
     }
 
     /**
@@ -43,7 +43,7 @@ class StudentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
     }
 
     /**
@@ -51,7 +51,7 @@ class StudentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        return "update " . $id;
     }
 
     /**
@@ -59,6 +59,6 @@ class StudentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return "destroy " . $id;
     }
 }

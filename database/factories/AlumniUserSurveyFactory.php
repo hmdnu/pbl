@@ -27,7 +27,7 @@ class AlumniUserSurveyFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'student_nim' => Student::inRandomOrder()->first()->nim,
             'alumni_evaluation_id' => AlumniEvaluation::inRandomOrder()->first()->id,
-            'curriculum_suggestions' => $this->faker->paragraph,
+            'curriculum_suggestion' => $this->faker->paragraph,
         ];
     }
 }

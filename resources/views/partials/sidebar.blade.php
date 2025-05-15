@@ -22,6 +22,10 @@
             'name' => 'Profesi',
             'link' => '/profession',
         ],
+        [
+            'name' => 'Test Crud',
+            'link' => '/test-crud',
+        ],
     ];
 @endphp
 
