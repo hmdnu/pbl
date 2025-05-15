@@ -13,53 +13,53 @@
 
                     <!-- Nama -->
                     <div class="mb-3">
-                        <label for="nama" class="form-label">Nama</label>
-                        <input type="text" name="nama" class="form-control" id="nama" value="{{ old('nama') }}"
+                        <label for="name" class="form-label">Nama</label>
+                        <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}"
                             required>
-                        @error('nama')
+                        @error('name')
                             <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <!-- Jenis Instansi -->
                     <div class="mb-3">
-                        <label for="jenis_instansi" class="form-label">Jenis Instansi</label>
-                        <select name="jenis_instansi" class="form-select" id="jenis_instansi" required>
+                        <label for="institution_type" class="form-label">Jenis Instansi</label>
+                        <select name="institution_type" class="form-select" id="institution_type" required>
                             <option value="">-- Pilih Jenis Instansi --</option>
                             <option value="pendidikan_tinggi"
-                                {{ old('jenis_instansi') == 'pendidikan_tinggi' ? 'selected' : '' }}>Pendidikan Tinggi
+                                {{ old('institution_type') == 'pendidikan_tinggi' ? 'selected' : '' }}>Pendidikan Tinggi
                             </option>
                             <option value="instansi_pemerintah"
-                                {{ old('jenis_instansi') == 'instansi_pemerintah' ? 'selected' : '' }}>Instansi Pemerintah
+                                {{ old('institution_type') == 'instansi_pemerintah' ? 'selected' : '' }}>Instansi Pemerintah
                             </option>
                             <option value="perusahaan_swasta"
-                                {{ old('jenis_instansi') == 'perusahaan_swasta' ? 'selected' : '' }}>Perusahaan Swasta
+                                {{ old('institution_type') == 'perusahaan_swasta' ? 'selected' : '' }}>Perusahaan Swasta
                             </option>
-                            <option value="BUMN" {{ old('jenis_instansi') == 'BUMN' ? 'selected' : '' }}>BUMN</option>
-                            <option value="lainnya" {{ old('jenis_instansi') == 'lainnya' ? 'selected' : '' }}>Lainnya
+                            <option value="BUMN" {{ old('institution_type') == 'BUMN' ? 'selected' : '' }}>BUMN</option>
+                            <option value="lainnya" {{ old('institution_type') == 'lainnya' ? 'selected' : '' }}>Lainnya
                             </option>
                         </select>
-                        @error('jenis_instansi')
+                        @error('institution_type')
                             <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <!-- Nama Instansi -->
                     <div class="mb-3">
-                        <label for="nama_instansi" class="form-label">Nama Instansi</label>
-                        <input type="text" name="nama_instansi" class="form-control" id="nama_instansi"
-                            value="{{ old('nama_instansi') }}" required>
-                        @error('nama_instansi')
+                        <label for="institution_name" class="form-label">Nama Instansi</label>
+                        <input type="text" name="institution_name" class="form-control" id="institution_name"
+                            value="{{ old('institution_name') }}" required>
+                        @error('institution_name')
                             <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <!-- Jabatan -->
                     <div class="mb-3">
-                        <label for="jabatan" class="form-label">Jabatan</label>
-                        <input type="text" name="jabatan" class="form-control" id="jabatan"
-                            value="{{ old('jabatan') }}" required>
-                        @error('jabatan')
+                        <label for="position" class="form-label">Jabatan</label>
+                        <input type="text" name="position" class="form-control" id="position"
+                            value="{{ old('position') }}" required>
+                        @error('position')
                             <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>
@@ -76,10 +76,10 @@
 
                     <!-- NIM Mahasiswa -->
                     <div class="mb-3">
-                        <label for="nim_mahasiswa" class="form-label">NIM Mahasiswa</label>
-                        <input type="text" name="nim_mahasiswa" class="form-control" id="nim_mahasiswa"
-                            value="{{ old('nim_mahasiswa') }}" required>
-                        @error('nim_mahasiswa')
+                        <label for="student_nim" class="form-label">NIM Mahasiswa</label>
+                        <input type="text" name="student_nim" class="form-control" id="student_nim"
+                            value="{{ old('student_nim') }}" required>
+                        @error('student_nim')
                             <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>
@@ -87,14 +87,14 @@
                     <!-- Penilaian Soft Skill -->
                     @php
                         $questions = [
-                            'kerjasama_tim' => 'Kemampuan Kerja Sama dalam Tim',
-                            'keahlian_ti' => 'Keahlian di Bidang TI',
-                            'bahasa_asing' => 'Kemampuan Berbahasa Asing',
-                            'komunikasi' => 'Kemampuan Berkomunikasi',
-                            'pengembangan_diri' => 'Pengembangan Diri',
-                            'kepemimpinan' => 'Kepemimpinan',
-                            'etos_kerja' => 'Etos Kerja',
-                            'kompetensi_kurang' => 'Kompetensi yang Belum Terpenuhi',
+                            'teamwork' => 'Kemampuan Kerja Sama dalam Tim',
+                            'it_expertise' => 'Keahlian di Bidang TI',
+                            'foreign_language' => 'Kemampuan Berbahasa Asing',
+                            'communication' => 'Kemampuan Berkomunikasi',
+                            'self_development' => 'Pengembangan Diri',
+                            'leadership' => 'Kepemimpinan',
+                            'work_ethic' => 'Etos Kerja',
+                            'unmet_competencies' => 'Kompetensi yang Belum Terpenuhi',
                         ];
 
                         $options = ['Sangat Baik', 'Baik', 'Cukup', 'Kurang'];
@@ -121,9 +121,9 @@
 
                     <!-- Saran untuk Kurikulum -->
                     <div class="mb-3">
-                        <label for="saran_kurikulum" class="form-label">Saran untuk Kurikulum</label>
-                        <textarea name="saran_kurikulum" class="form-control" id="saran_kurikulum" rows="4" required>{{ old('saran_kurikulum') }}</textarea>
-                        @error('saran_kurikulum')
+                        <label for="curriculum_suggestion" class="form-label">Saran untuk Kurikulum</label>
+                        <textarea name="curriculum_suggestion" class="form-control" id="curriculum_suggestion" rows="4" required>{{ old('curriculum_suggestion') }}</textarea>
+                        @error('curriculum_suggestion')
                             <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>

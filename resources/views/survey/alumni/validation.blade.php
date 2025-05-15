@@ -12,8 +12,8 @@
                     @csrf
 
                     <div class="mb-3">
-                        <label for="nama" class="form-label">Nama Lengkap</label>
-                        <input type="text" class="form-control" id="nama" name="nama"
+                        <label for="name" class="form-label">Nama Lengkap</label>
+                        <input type="text" class="form-control" id="name" name="name"
                             placeholder="Masukkan nama lengkap Anda">
                     </div>
 

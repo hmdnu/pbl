@@ -10,8 +10,8 @@
                 <form id="agreementForm" method="POST" action="/survey/alumni-user/agreement">
                     @csrf
                     <div class="mb-3">
-                        <label for="nama" class="form-label">Nama</label>
-                        <input type="text" class="form-control" id="nama" name="nama" required>
+                        <label for="name" class="form-label">Nama</label>
+                        <input type="text" class="form-control" id="nama" name="name" required>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
