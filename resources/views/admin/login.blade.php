@@ -8,7 +8,6 @@
             <h4 class="mb-4 text-center">Login Admin</h4>
             <form action="/login" method="POST">
                 @csrf
-
                 <div class="mb-3">
                     <label for="nidn" class="form-label">NIP</label>
                     <input type="text" name="nidn" id="nidn" class="form-control"
