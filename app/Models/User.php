@@ -12,7 +12,7 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    protected $primaryKey = 'nidn';
+    protected $primaryKey = 'nip';
     public $incrementing = false;
     protected $keyType = 'string';
 
@@ -21,7 +21,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = ["nidn", "nama", "password"];
+    protected $fillable = ["nip", "name", "password"];
 
     /**
      * The attributes that should be hidden for serialization.
