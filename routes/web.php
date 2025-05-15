@@ -20,13 +20,14 @@ Route::post("/post-login", [AuthController::class, 'login']);
 Route::get("/logout", [AuthController::class, "logout"]);
 
 Route::middleware([AdminAuth::class])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+});
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('study-program', StudyProgramController::class);
     Route::resource('admin', AdminController::class);
     Route::resource('student', StudentController::class);
     Route::resource('profession', ProfessionController::class);
     Route::resource('profession-category', ProfessionCategoryController::class);
-});
 
 Route::resource('test-crud', CrudTestController::class);
 
@@ -46,4 +47,7 @@ Route::prefix('/survey')->group(function () {
         Route::get('/form', [AlumniSurveyController::class, 'showform']);
         Route::post('/form', [AlumniSurveyController::class, 'submitForm']);
     });
+
 });
+
+Route::resource('program-study', StudyProgramController::class);
