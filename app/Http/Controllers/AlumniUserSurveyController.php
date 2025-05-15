@@ -24,8 +24,7 @@ class AlumniUserSurveyController extends Controller
             'otp' => 'required|string',
         ]);
 
-        // TODO: Validasi OTP
-        return redirect()->route('survey.form')->with('success', 'OTP berhasil diverifikasi.');
+        return redirect('/survey/alumni/form');
     }
 
     public function submitSurvey(Request $request)
@@ -48,7 +47,7 @@ class AlumniUserSurveyController extends Controller
             'kompetensi_kurang' => 'required',
             'saran_kurikulum' => 'required|string',
         ]);
-        
-        return redirect()->route('survey.form')->with('success', 'Survey berhasil dikirim!');
+
+        return "ok";
     }
 }

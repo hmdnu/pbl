@@ -8,7 +8,7 @@
             <div class="card-body">
                 <h2 class="text-center mb-4">Form Survey Pengguna Alumni</h2>
 
-                <form method="POST" action="{{ route('survey.form.submit') }}">
+                <form method="POST" action="/survey/alumni-user/form">
                     @csrf
 
                     <!-- Nama -->
@@ -130,7 +130,7 @@
 
                     <!-- Submit Button -->
                     <div class="mb-3 text-center">
-                        <button type="submit" class="btn btn-primary w-100">Kirim Jawaban</button>
+                        <button type="submit" class="btn btn-primary w-100">Kirim</button>
                     </div>
                 </form>
             </div>
