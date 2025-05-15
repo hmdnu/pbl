@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Survey Alumni')
+
 @section('content')
     <div class="container py-5 d-flex justify-content-center">
         <div class="card w-100 p-3">
