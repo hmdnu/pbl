@@ -10,8 +10,8 @@
                 <form action="{{ $action }}" method="POST">
                     @csrf
                     @method($method)
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Ya</button>
                 </form>
             </div>
         </div>
