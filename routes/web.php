@@ -24,6 +24,7 @@ Route::middleware([AdminAuth::class])->group(function () {
     Route::resource('admin', AdminController::class);
     Route::resource('profession', ProfessionController::class);
     Route::resource('profession-category', ProfessionCategoryController::class);
+    Route::resource('student', StudentController::class);
 });
 
 Route::resource('test-crud', CrudTestController::class);
@@ -45,5 +46,3 @@ Route::prefix('/survey')->group(function () {
         Route::post('/form', [AlumniSurveyController::class, 'submitForm']);
     });
 });
-
-Route::resource('student', StudentController::class);

@@ -26,11 +26,13 @@
                     @endif
                 </td>
                 <td>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-form-{{ $student->nim }}">
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#modal-form-{{ $student->nim }}">
                         Edit
                     </button>
-                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-confirm-{{ $student->nim }}">
-                        Delete
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#modal-confirm-{{ $student->nim }}">
+                        Hapus
                     </button>
 
                     {{-- Modal Edit --}}
@@ -45,13 +47,15 @@
                         </div>
                         <div class="mb-3">
                             <label>Tanggal Lulus</label>
-                            <input type="date" class="form-control" name="graduation_date" value="{{ $student->graduation_date }}">
+                            <input type="date" class="form-control" name="graduation_date"
+                                value="{{ $student->graduation_date }}">
                         </div>
                         <div class="mb-3">
                             <label>Program Studi</label>
                             <select name="program_study_id" class="form-select">
                                 @foreach ($program_studies as $ps)
-                                    <option value="{{ $ps->id }}" {{ $ps->id == $student->program_study_id ? 'selected' : '' }}>
+                                    <option value="{{ $ps->id }}"
+                                        {{ $ps->id == $student->program_study_id ? 'selected' : '' }}>
                                         {{ $ps->name }}
                                     </option>
                                 @endforeach
@@ -60,7 +64,8 @@
                     </x-modal-form>
 
                     {{-- Modal Delete --}}
-                    <x-modal-confirm :id="$student->nim" title="Hapus Mahasiswa: {{ $student->name }}" :action="url('/student/' . $student->nim)" method="DELETE" />
+                    <x-modal-confirm :id="$student->nim" title="Hapus Mahasiswa: {{ $student->name }}" :action="url('/student/' . $student->nim)"
+                        method="DELETE" />
                 </td>
             </tr>
         @endforeach

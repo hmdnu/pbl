@@ -11,13 +11,8 @@
         @csrf
         <div class="input-group mb-3">
             <span class="input-group-text">NIM</span>
-            <input
-                type="text"
-                name="nim"
-                class="form-control @error('nim') is-invalid @enderror"
-                placeholder="NIM Mahasiswa"
-                value="{{ old('nim') }}"
-            >
+            <input type="text" name="nim" class="form-control @error('nim') is-invalid @enderror"
+                placeholder="NIM Mahasiswa" value="{{ old('nim') }}">
             @error('nim')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -25,13 +20,8 @@
 
         <div class="input-group mb-3">
             <span class="input-group-text">Nama</span>
-            <input
-                type="text"
-                name="name"
-                class="form-control @error('name') is-invalid @enderror"
-                placeholder="Nama Mahasiswa"
-                value="{{ old('name') }}"
-            >
+            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
+                placeholder="Nama Mahasiswa" value="{{ old('name') }}">
             @error('name')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -39,12 +29,8 @@
 
         <div class="input-group mb-3">
             <span class="input-group-text">Tanggal Lulus</span>
-            <input
-                type="date"
-                name="graduation_date"
-                class="form-control @error('graduation_date') is-invalid @enderror"
-                value="{{ old('graduation_date') }}"
-            >
+            <input type="date" name="graduation_date" class="form-control @error('graduation_date') is-invalid @enderror"
+                value="{{ old('graduation_date') }}">
             @error('graduation_date')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
