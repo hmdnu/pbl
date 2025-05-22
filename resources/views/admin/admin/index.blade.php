@@ -7,7 +7,6 @@
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-form-create">Add Item</button>
 
     <x-modal-form id="create" :action="url('/admin')" method="POST" title="Add item">
-        @csrf
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">NIP</span>
             <input type="text" class="form-control" placeholder="NIP" name="nip" required>
@@ -22,5 +21,5 @@
         </div>
     </x-modal-form>
 
-    @include('admin.table')
+    @include('admin.admin.table')
 @endsection

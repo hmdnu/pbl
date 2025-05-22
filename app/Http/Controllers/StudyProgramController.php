@@ -36,7 +36,7 @@ class StudyProgramController extends Controller
             'name' => $request->input('name'),
         ]);
 
-        return redirect()->back()->with('success', 'Data berhasil ditambahkan');
+        return back()->with('success', 'Data berhasil ditambahkan');
     }
 
     /**
@@ -69,7 +69,7 @@ class StudyProgramController extends Controller
             'name' => $request->input('name'),
         ]);
 
-        return redirect()->back()->with('success', 'Data berhasil diperbarui');
+        return back()->with('success', 'Data berhasil diperbarui');
     }
 
     /**
@@ -80,7 +80,7 @@ class StudyProgramController extends Controller
         $programStudy = ProgramStudy::findOrFail($id);
         $programStudy->delete();
 
-        return redirect()->back()->with('success', 'Data berhasil dihapus');
+        return back()->with('success', 'Data berhasil dihapus');
 
     }
 }

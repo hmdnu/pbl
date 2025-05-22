@@ -8,7 +8,6 @@
 
     {{-- Modal Tambah Mahasiswa --}}
     <x-modal-form id="create" :action="url('/students')" method="POST" title="Tambah Mahasiswa">
-        @csrf
         <div class="input-group mb-3">
             <span class="input-group-text">NIM</span>
             <input type="text" name="nim" class="form-control @error('nim') is-invalid @enderror"
