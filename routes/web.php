@@ -50,6 +50,7 @@ Route::prefix('/survey')->group(function () {
         Route::get('/form', [AlumniSurveyController::class, 'showform'])->name('view.alumni.form');
         Route::post('/form', [AlumniSurveyController::class, 'submitForm'])->name('post.alumni.form');
     });
+
 });
 
 Route::get('/test-redis', function () {
