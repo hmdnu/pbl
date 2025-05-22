@@ -53,4 +53,4 @@ Route::prefix('/survey')->group(function () {
 
 });
 
-Route::resource('program-study', StudyProgramController::class);
+// Route::resource('program-study', StudyProgramController::class);
