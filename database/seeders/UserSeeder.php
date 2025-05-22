@@ -16,12 +16,12 @@ class UserSeeder extends Seeder
     {
         $data = [
             [
-                'nidn' => '1998242526',
+                'nip' => '1998242526',
                 'name' => 'Wahyu',
                 'password' => Hash::make('12345') 
             ],
             [
-                'nidn' => '1998222324',
+                'nip' => '1998222324',
                 'name' => 'Astrid',
                 'password' => Hash::make('12345')
             ]
