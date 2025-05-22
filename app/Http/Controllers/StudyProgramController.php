@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ProgramStudy;
 
 class StudyProgramController extends Controller
 {
@@ -11,7 +12,7 @@ class StudyProgramController extends Controller
      */
     public function index()
     {
-        //
+         return view("ProgramStudy.index", ["programstudies"=>ProgramStudy::all()] );
     }
 
     /**
@@ -26,9 +27,17 @@ class StudyProgramController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+    ]);
+
+    ProgramStudy::create([
+        'name' => $request->input('name'),
+    ]);
+
+    return redirect()->back()->with('success', 'Data berhasil ditambahkan');
+}
 
     /**
      * Display the specified resource.
@@ -51,7 +60,16 @@ class StudyProgramController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+       $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $programStudy = ProgramStudy::findOrFail($id);
+        $programStudy->update([
+            'name' => $request->input('name'),
+        ]);
+
+        return redirect()->back()->with('success', 'Data berhasil diperbarui');
     }
 
     /**
@@ -59,6 +77,10 @@ class StudyProgramController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+         $programStudy = ProgramStudy::findOrFail($id);
+        $programStudy->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
+    
     }
 }
