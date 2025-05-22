@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Models\ProgramStudy;
 
 class StudentController extends Controller
 {
@@ -11,7 +13,10 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        $students = Student::with('programStudy')->get();
+        $program_studies = ProgramStudy::all();
+
+        return view('admin.student.index', compact('students', 'program_studies'));
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -11,6 +12,7 @@ class AdminController extends Controller
      */
     public function index()
     {
+        return view("admin.admin.index", ["admins" => User::all()]);
     }
 
     /**
@@ -26,7 +28,19 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nip' => 'required|string|min:3|unique:users,nip',
+            'name' => 'required|string|max:100',
+            'password' => 'required|min:5',
+        ]);
+
+        User::create([
+            'nip' => $request->input('nip'),
+            'name' => $request->input('name'),
+            'password' => bcrypt($request->input('password')),
+        ]);
+
+        return back()->with('success', 'Data user berhasil disimpan');
     }
 
     /**
@@ -48,16 +62,29 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $nip)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:100',
+        ]);
+
+        $admin = User::findOrFail($nip);
+        $admin->update([
+            'name' => $request->input('name'),
+        ]);
+
+        return back()->with('success', 'Data user berhasil disimpan');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $nip)
     {
-        //
+        $admin = User::findOrFail($nip);
+        $admin->delete();
+
+        return back()->with('success', 'Data user berhasil disimpan');
+
     }
 }
