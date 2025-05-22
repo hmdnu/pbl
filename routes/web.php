@@ -28,9 +28,6 @@ Route::middleware([AdminAuth::class])->group(function () {
     Route::resource('admin', AdminController::class);
     Route::resource('profession', ProfessionController::class);
     Route::resource('profession-category', ProfessionCategoryController::class);
-
-    Route::middleware([AdminAuth::class])->group(function () {
-   
 });
 
 Route::resource('test-crud', CrudTestController::class);
