@@ -10,7 +10,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'nidn' => ['required', 'string'],
+            'nip' => ['required', 'string'],
             'password' => ['required']
         ]);
 
@@ -20,7 +20,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'credential' => 'Nidn atau Password salah'
+            'credential' => 'Nip atau Password salah'
         ])->withInput($request->except('password'));
     }
 

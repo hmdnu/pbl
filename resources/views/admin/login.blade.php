@@ -9,9 +9,9 @@
             <form action="/login" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label for="nidn" class="form-label">NIP</label>
-                    <input type="text" name="nidn" id="nidn" class="form-control"
-                        placeholder="Masukkan NIDN Anda" required>
+                    <label for="nip" class="form-label">NIP</label>
+                    <input type="text" name="nip" id="nip" class="form-control" placeholder="Masukkan NIP Anda"
+                        required>
                 </div>
 
                 <div class="mb-3">
