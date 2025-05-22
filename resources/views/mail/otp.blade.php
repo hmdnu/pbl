@@ -1,0 +1,3 @@
+<div>
+    OTP: {{ $otp }}
+</div>

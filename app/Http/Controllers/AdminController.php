@@ -12,7 +12,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view("admin.index", ["admins"=>User::all()]);
+        return view("admin.admin.index", ["admins" => User::all()]);
     }
 
     /**
@@ -30,17 +30,17 @@ class AdminController extends Controller
     {
         $request->validate([
             'nip' => 'required|string|min:3|unique:users,nip',
-            'name' => 'required|string|max:100', 
-            'password' => 'required|min:5', 
+            'name' => 'required|string|max:100',
+            'password' => 'required|min:5',
         ]);
 
         User::create([
             'nip' => $request->input('nip'),
             'name' => $request->input('name'),
-            'password' => bcrypt($request->input('password')), 
+            'password' => bcrypt($request->input('password')),
         ]);
 
-        return redirect()->back()->with('success', 'Data user berhasil disimpan');
+        return back()->with('success', 'Data user berhasil disimpan');
     }
 
     /**
@@ -65,15 +65,15 @@ class AdminController extends Controller
     public function update(Request $request, string $nip)
     {
         $request->validate([
-            'name' => 'required|string|max:100',  
+            'name' => 'required|string|max:100',
         ]);
 
         $admin = User::findOrFail($nip);
         $admin->update([
-            'name'=> $request->input('name'),
+            'name' => $request->input('name'),
         ]);
 
-        return redirect()->back()->with('success', 'Data user berhasil disimpan');
+        return back()->with('success', 'Data user berhasil disimpan');
     }
 
     /**
@@ -84,7 +84,7 @@ class AdminController extends Controller
         $admin = User::findOrFail($nip);
         $admin->delete();
 
-        return redirect()->back()->with('success', 'Data user berhasil disimpan');
+        return back()->with('success', 'Data user berhasil disimpan');
 
     }
 }
