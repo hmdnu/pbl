@@ -32,7 +32,19 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nim' => 'required|unique:students,nim',
+            'name' => 'required|string|max:255',
+            'graduation_date' => 'required|date',
+            'program_study_id' => 'required|exists:program_studies,id',
+        ]);
+
+        try {
+            Student::create($validated);
+            return redirect()->back()->with('success', 'Mahasiswa berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data');
+        }
     }
 
     /**
@@ -56,7 +68,21 @@ class StudentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $student = Student::where('nim', $id)->firstOrFail();
+
+        $validated = $request->validate([
+            'nim' => 'required|unique:students,nim,' . $student->nim . ',nim',
+            'name' => 'required|string|max:255',
+            'graduation_date' => 'required|date',
+            'program_study_id' => 'required|exists:program_studies,id',
+        ]);
+
+        try {
+            $student->update($validated);
+            return redirect()->back()->with('success', 'Data mahasiswa berhasil diperbarui');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengupdate data');
+        }
     }
 
     /**
@@ -64,6 +90,13 @@ class StudentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $student = Student::where('nim', $id)->firstOrFail();
+            $student->delete();
+
+            return redirect()->back()->with('success', 'Mahasiswa berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data');
+        }
     }
 }

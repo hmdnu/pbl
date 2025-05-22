@@ -5,9 +5,23 @@
 @section('admin-content')
 
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-form-create">Tambah Mahasiswa</button>
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
 
     {{-- Modal Tambah Mahasiswa --}}
-    <x-modal-form id="create" :action="url('/students')" method="POST" title="Tambah Mahasiswa">
+    <x-modal-form id="create" :action="url('/student')" method="POST" title="Tambah Mahasiswa">
+        @csrf
         <div class="input-group mb-3">
             <span class="input-group-text">NIM</span>
             <input type="text" name="nim" class="form-control @error('nim') is-invalid @enderror"
