@@ -14,7 +14,6 @@ use App\Http\Middleware\VerifyUserForm;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudyProgramController;
 use App\Http\Controllers\AlumniUserSurveyController;
-use Illuminate\Support\Facades\Redis;
 
 Route::get('/', fn() => view('welcome'));
 Route::get("/login", fn() => view('admin.login'));
@@ -37,6 +36,7 @@ Route::middleware([AdminAuth::class])->group(function () {
     Route::resource('admin', AdminController::class);
     Route::resource('profession', ProfessionController::class);
     Route::resource('profession-category', ProfessionCategoryController::class);
+
 });
 
 Route::prefix('/survey')->group(function () {
