@@ -14,6 +14,5 @@ class AlumniUserSurveySeeder extends Seeder
     public function run(): void
     {
         AlumniUserSurvey::factory()->count(10)->create();
-
     }
 }
