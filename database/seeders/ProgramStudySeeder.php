@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\ProgramStudy;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 class ProgramStudySeeder extends Seeder
 {
@@ -13,13 +13,15 @@ class ProgramStudySeeder extends Seeder
      */
     public function run(): void
     {
+        $now = Carbon::now();
+
         $data = [
-            ["id" => 1, 'name' => 'RTI'],
-            ['id' => 2, 'name' => 'TI'],
-            ['id' => 3, 'name' => 'SIB'],
-            ['id' => 4, 'name' => 'PPLS']
+            ['id' => 1, 'name' => 'RTI', 'created_at' => $now, 'updated_at' => $now],
+            ['id' => 2, 'name' => 'TI', 'created_at' => $now, 'updated_at' => $now],
+            ['id' => 3, 'name' => 'SIB', 'created_at' => $now, 'updated_at' => $now],
+            ['id' => 4, 'name' => 'PPLS', 'created_at' => $now, 'updated_at' => $now],
         ];
 
-        DB::table('program_studies')->insert($data);
+        ProgramStudy::insert($data);
     }
 }

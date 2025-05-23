@@ -13,7 +13,6 @@ class AlumniEvaluationSeeder extends Seeder
      */
     public function run(): void
     {
-       AlumniEvaluation::factory()->count(5)->create();
-        
+        AlumniEvaluation::factory()->count(5)->create();
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\AlumniEvaluation;
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,8 +16,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ProgramStudySeeder::class,
             StudentSeeder::class,
-            ProffesionCategorySeeder::class,
-            ProffesionSeeder::class,
+            ProfessionCategorySeeder::class,
+            ProfessionSeeder::class,
             AlumniSurveySeeder::class,
             AlumniEvaluationSeeder::class,
             AlumniUserSurveySeeder::class,
