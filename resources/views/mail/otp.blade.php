@@ -1,3 +1,4 @@
 <div>
-    OTP: {{ $otp }}
+    OTP:
+    <a href="{{ $otp }}">{{ $otp }}</a>
 </div>
