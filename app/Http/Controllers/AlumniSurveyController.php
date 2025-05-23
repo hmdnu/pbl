@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class AlumniSurveyController extends Controller
@@ -14,11 +15,6 @@ class AlumniSurveyController extends Controller
     public function showValidation()
     {
         return view('survey.alumni.validation');
-    }
-
-    public function submitValidation(Request $request)
-    {
-        return redirect("/survey/alumni/form ");
     }
 
     public function submitForm()
