@@ -20,17 +20,17 @@ return new class extends Migration {
 
             $table->string('phone');
             $table->string('email');
-            $table->date('first_work_date');
-            $table->integer('waiting_period');
+            $table->date('first_work_date')->nullable();
+            $table->integer('waiting_period')->nullable();
 
-            $table->string('institution_type');
-            $table->string('institution_name');
-            $table->string('institution_location');
-            $table->date('first_institution_work_date');
+            $table->string('institution_type')->nullable();
+            $table->string('institution_name')->nullable();
+            $table->string('institution_location')->nullable();
+            $table->date('first_institution_work_date')->nullable();
 
-            $table->string('supervisor_name');
-            $table->string('supervisor_position');
-            $table->string('supervisor_email');
+            $table->string('supervisor_name')->nullable();
+            $table->string('supervisor_position')->nullable();
+            $table->string('supervisor_email')->nullable();
 
             $table->timestamps();
         });
