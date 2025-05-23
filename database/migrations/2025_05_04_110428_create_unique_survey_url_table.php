@@ -10,14 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('email_otps', function (Blueprint $table) {
+        Schema::create('unique_urls', function (Blueprint $table) {
             $table->id();
-            $table->string('email');
-            $table->string('otp');
-            $table->timestamp('expires_at');
+            $table->string('role');
+            $table->string('unique_code');
+            $table->boolean('is_submitted')->default(false);
             $table->timestamps();
         });
-
     }
 
     /**
