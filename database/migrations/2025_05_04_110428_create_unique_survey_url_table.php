@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('unique_urls', function (Blueprint $table) {
             $table->id();
             $table->string('role');
+            $table->string('nim')->nullable();
             $table->string('unique_code');
             $table->boolean('is_submitted')->default(false);
             $table->timestamps();

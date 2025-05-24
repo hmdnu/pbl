@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Student;
 
@@ -13,6 +12,18 @@ class StudentSeeder extends Seeder
      */
     public function run(): void
     {
-       Student::factory()->count(10)->create();
+        $data = [
+            'nim' => '123',
+            'name' => 'siluman rubah',
+            'email' => 'daniuyan71@gmail.com',
+            'graduation_date' => '05-01-2025',
+            'program_study_id' => '1',
+            'has_filled_survey' => '0',
+            'created_at' => now(),
+            'updated_at' => now()
+        ];
+
+        Student::factory()->count(10)->create();
+        Student::create($data);
     }
 }
