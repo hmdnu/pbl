@@ -10,6 +10,20 @@
                 <form action="{{ route('post.alumni.send-email', ['role' => 'alumni']) }}" method="POST">
                     @csrf
                     <div class="mb-3">
+                        <label for="nim" class="form-label">NIM</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="nim" name="nim"
+                                placeholder="Masukkan NIM Anda" value="{{ old('nim') }}">
+                        </div>
+                        @if (session('nim_not_found'))
+                            <p class="text-danger mt-1">{{ session('nim_not_found') }}</p>
+                        @endif
+                        @error('nim')
+                            <p class="text-danger mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
                         <label for="email" class="form-label">Alamat Email</label>
                         <div class="input-group">
                             <input type="email" class="form-control" id="email" name="email"

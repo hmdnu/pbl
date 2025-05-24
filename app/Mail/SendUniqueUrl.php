@@ -3,25 +3,24 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SendOtp extends Mailable
+class SendUniqueUrl extends Mailable
 {
     use Queueable, SerializesModels;
 
 
-    private $otp;
+    private string $uniqueCode;
     /**
      * Create a new message instance.
      */
-    public function __construct($otp)
+    public function __construct($uniqueCode)
     {
-        $this->otp = $otp;
+        $this->uniqueCode = $uniqueCode;
     }
 
     /**
@@ -31,7 +30,7 @@ class SendOtp extends Mailable
     {
         return new Envelope(
             from: new Address('daniuyan71@gmail.com', 'Nerots'),
-            subject: 'Send Otp',
+            subject: 'Send Unique Url',
         );
     }
 
@@ -43,7 +42,7 @@ class SendOtp extends Mailable
         return new Content(
             view: 'mail.otp',
             with: [
-                'otp' => $this->otp
+                'otp' => $this->uniqueCode
             ]
         );
     }
