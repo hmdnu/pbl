@@ -30,7 +30,6 @@ Route::middleware([AdminAuth::class])->group(function () {
             Route::get('/spread', [DashboardController::class, 'spread'])->name('dashboard.data.spread');
         });
     });
-
     Route::resource('student', StudentController::class);
     Route::resource('study-program', StudyProgramController::class);
     Route::resource('admin', AdminController::class);
@@ -50,11 +49,12 @@ Route::prefix('/survey')->group(function () {
     });
 
     Route::middleware([VerifyUserForm::class])->group(function () {
-        Route::get('/form/alumni-user/{code}', fn($code) => view('survey.alumni_users.form'))->name('view.alumni-user.form');
-        Route::get('/form/alumni/{code}', fn($code) => view('survey.alumni.form'))->name('view.alumni.form');
-    });
+        Route::get('/form/alumni-user/{code}', [AlumniUserSurveyController::class, 'index'])->name('view.alumni-user.form');
 
-    Route::get('/validation/form/{role}/{code}', [UniqueUrlController::class, 'redirectPage']);
+        Route::get('/form/alumni/{code}', [AlumniSurveyController::class, 'index'])->name('view.alumni.form');
+        Route::post('/form/alumni/{code}', [AlumniSurveyController::class, 'storeFirstForm'])->name('post.alumni.form');
+        Route::get('/form/alumni/{code}/2/{category}', [AlumniSurveyController::class, 'storeSecondForm'])->name('view.alumni.form.2');
+    });
 });
 
 Route::resource('test-crud', CrudTestController::class);
