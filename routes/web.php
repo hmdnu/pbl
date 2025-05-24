@@ -29,7 +29,7 @@ Route::middleware([AdminAuth::class])->group(function () {
 
         Route::prefix('/data')->group(function () {
             Route::get('/spread', [DashboardController::class, 'spread'])->name('dashboard.data.spread');
-            Route::get('/evaluation');
+            Route::get('/evaluation', [DashboardController::class, 'evaluation'])->name('dashboard.data.evaluation');
         });
     });
     Route::resource('student', StudentController::class);
@@ -37,7 +37,6 @@ Route::middleware([AdminAuth::class])->group(function () {
     Route::resource('admin', AdminController::class);
     Route::resource('profession', ProfessionController::class);
     Route::resource('profession-category', ProfessionCategoryController::class);
-
 });
 
 Route::prefix('/survey')->group(function () {

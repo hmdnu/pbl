@@ -8,6 +8,7 @@
     <title> @yield('title') </title>
     @vite('resources/js/app.js')
     @stack('heads')
+    <script src="https://unpkg.com/feather-icons"></script>
 </head>
 
 <body>
@@ -16,5 +17,9 @@
     </main>
     @stack('scripts')
 </body>
+
+<script>
+    feather.replace();
+</script>
 
 </html>
