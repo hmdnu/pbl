@@ -1,4 +1,4 @@
-/* === Sidebar Container === */
+/* Sidebar Container */
 .sidebar {
     background-color: #111c44;
     height: 100vh;
@@ -12,7 +12,7 @@
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* === Grup Judul Menu === */
+/* Grup Judul Menu */
 .sidebar .menu-title {
     font-size: 0.75rem;
     font-weight: 600;
@@ -24,7 +24,7 @@
     opacity: 0.8;
 }
 
-/* === Item Menu === */
+/* Item Menu */
 .sidebar .nav-link {
     display: flex;
     align-items: center;
@@ -38,7 +38,7 @@
     transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s;
 }
 
-/* === Hover Menu (tidak aktif) === */
+/* Hover Menu (tidak aktif) */
 .sidebar .nav-link:hover:not(.active) {
     background-color: #4c84ff;
     color: #ffffff;
@@ -46,7 +46,7 @@
     text-decoration: none;
 }
 
-/* === Menu Aktif === */
+/* Menu Aktif */
 .sidebar .nav-link.active {
     background-color: #202b44;
     color: #ffffff !important;
@@ -55,7 +55,7 @@
     transform: translateX(4px);
 }
 
-/* === Ikon Sidebar === */
+/* Ikon Sidebar */
 .sidebar .nav-link i,
 .sidebar .nav-link svg {
     color: #e0e6ed;

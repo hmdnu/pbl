@@ -50,55 +50,27 @@ class DashboardController extends Controller
         return response()->json($finalData);
     }
 
-    public function evaluationTeamwork()
-    {
-        return $this->getEvaluationData('teamwork');
-    }
-
-    public function evaluationItExpertise()
-    {
-        return $this->getEvaluationData('it_expertise');
-    }
-
-    public function evaluationForeignLanguage()
-    {
-        return $this->getEvaluationData('foreign_language');
-    }
-
-    public function evaluationCommunication()
-    {
-        return $this->getEvaluationData('communication');
-    }
-
-    public function evaluationSelfDevelopment()
-    {
-        return $this->getEvaluationData('self_development');
-    }
-
-    public function evaluationLeadership()
-    {
-        return $this->getEvaluationData('leadership');
-    }
-
-    public function evaluationWorkEthic()
-    {
-        return $this->getEvaluationData('work_ethic');
-    }
-
     public function evaluation()
     {
-        return response()->json([
-            'teamwork' => $this->evaluationTeamwork()->getData(),
-            'it_expertise' => $this->evaluationItExpertise()->getData(),
-            'foreign_language' => $this->evaluationForeignLanguage()->getData(),
-            'communication' => $this->evaluationCommunication()->getData(),
-            'self_development' => $this->evaluationSelfDevelopment()->getData(),
-            'leadership' => $this->evaluationLeadership()->getData(),
-            'work_ethic' => $this->evaluationWorkEthic()->getData(),
-        ]);
+        $columns = [
+            'teamwork',
+            'it_expertise',
+            'foreign_language',
+            'communication',
+            'self_development',
+            'leadership',
+            'work_ethic',
+        ];
+
+        $result = [];
+        foreach ($columns as $col) {
+            $result[$col] = $this->getEvaluationData($col);
+        }
+
+        return response()->json($result);
     }
 
-    // Helper function
+    // Helper function evaluation
     private function getEvaluationData($column)
     {
         $labelMap = [
@@ -116,15 +88,19 @@ class DashboardController extends Controller
 
         $total = $data->sum('total');
 
+        // label dan persentase
         foreach ($data as $item) {
             $item->label = $labelMap[$item->$column] ?? 'Tidak Diketahui';
             $item->percentage = round(($item->total / $total) * 100, 2);
         }
 
+        $finalData = $data->map(function ($item) {
+            return (object)[
+                'label' => $item->label,
+                'percentage' => $item->percentage,
+            ];
+        })->toArray();
 
-        return response()->json([
-            'total' => $total,
-            'data' => $data
-        ]);
+        return collect($finalData);
     }
 }

@@ -37,7 +37,7 @@ async function showChartsAndTable() {
         const labels = [];
         const percentages = [];
 
-        value.data.forEach((item) => {
+        value.forEach((item) => {
             labels.push(item.label);
             percentages.push(item.percentage);
         });
@@ -65,10 +65,10 @@ async function showChartsAndTable() {
         row.innerHTML = `
             <td>${index++}</td>
             <td>${criteriaLabels[key]}</td>
-            <td>${getPercentageByLabel(value.data, "Sangat Baik")}%</td>
-            <td>${getPercentageByLabel(value.data, "Baik")}%</td>
-            <td>${getPercentageByLabel(value.data, "Cukup")}%</td>
-            <td>${getPercentageByLabel(value.data, "Kurang")}%</td>
+            <td>${getPercentageByLabel(value, "Sangat Baik")}%</td>
+            <td>${getPercentageByLabel(value, "Baik")}%</td>
+            <td>${getPercentageByLabel(value, "Cukup")}%</td>
+            <td>${getPercentageByLabel(value, "Kurang")}%</td>
         `;
         tableBody.appendChild(row);
     }
