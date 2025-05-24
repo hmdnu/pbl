@@ -5,22 +5,27 @@
         [
             'name' => 'Mahasiswa',
             'link' => '/student',
+            'icon' => 'user',
         ],
         [
             'name' => 'Admin',
             'link' => '/admin',
+            'icon' => 'shield',
         ],
         [
             'name' => 'Program Studi',
             'link' => '/study-program',
+            'icon' => 'book-open'
         ],
         [
             'name' => 'Profesi',
             'link' => '/profession',
+            'icon' => 'briefcase',
         ],
         [
             'name' => 'Test Crud',
             'link' => '/test-crud',
+            'icon' => 'file-text',
         ],
     ];
 
@@ -28,14 +33,17 @@
         [
             'name' => 'Sebaran',
             'link' => '/dashboard/spread',
+            'icon' => 'map',
         ],
         [
             'name' => 'Penilaian',
             'link' => '/dashboard/evaluation',
+            'icon' => 'bar-chart-2',
         ],
         [
             'name' => 'Masa Tunggu',
             'link' => '/dashboard/wait-periode',
+            'icon' => 'clock',
         ],
     ];
 @endphp
@@ -54,7 +62,7 @@
                         @endphp
                         <li class="nav-item">
                             <a class="nav-link {{ $isActive }}" href="{{ $menu['link'] }}">
-                                {{-- <span data-feather="{{ $menu['icon'] }}"></span> --}}
+                                <span data-feather="{{ $menu['icon'] }}"></span>
                                 {{ $menu['name'] }}
                             </a>
                         </li>
@@ -71,7 +79,7 @@
                         @endphp
                         <li class="nav-item">
                             <a class="nav-link {{ $isActive }}" href="{{ $menu['link'] }}">
-                                {{-- <span data-feather="{{ $menu['icon'] }}"></span> --}}
+                                <span data-feather="{{ $menu['icon'] }}"></span>
                                 {{ $menu['name'] }}
                             </a>
                         </li>

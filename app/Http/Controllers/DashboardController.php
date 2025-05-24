@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class DashboardController extends Controller
 {
     public function showSpread()
@@ -15,6 +16,7 @@ class DashboardController extends Controller
     {
         return view("admin.dashboard.evaluation");
     }
+
     public function showWaitPeriode()
     {
         return view("admin.dashboard.wait_periode");
@@ -48,4 +50,57 @@ class DashboardController extends Controller
         return response()->json($finalData);
     }
 
+    public function evaluation()
+    {
+        $columns = [
+            'teamwork',
+            'it_expertise',
+            'foreign_language',
+            'communication',
+            'self_development',
+            'leadership',
+            'work_ethic',
+        ];
+
+        $result = [];
+        foreach ($columns as $col) {
+            $result[$col] = $this->getEvaluationData($col);
+        }
+
+        return response()->json($result);
+    }
+
+    // Helper function evaluation
+    private function getEvaluationData($column)
+    {
+        $labelMap = [
+            1 => 'Sangat Baik',
+            2 => 'Baik',
+            3 => 'Cukup',
+            4 => 'Kurang',
+        ];
+
+        $data = DB::table('alumni_evaluations')
+            ->select($column, DB::raw('COUNT(*) as total'))
+            ->groupBy($column)
+            ->orderByDesc('total')
+            ->get();
+
+        $total = $data->sum('total');
+
+        // label dan persentase
+        foreach ($data as $item) {
+            $item->label = $labelMap[$item->$column] ?? 'Tidak Diketahui';
+            $item->percentage = round(($item->total / $total) * 100, 2);
+        }
+
+        $finalData = $data->map(function ($item) {
+            return (object)[
+                'label' => $item->label,
+                'percentage' => $item->percentage,
+            ];
+        })->toArray();
+
+        return collect($finalData);
+    }
 }
