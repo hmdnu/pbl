@@ -21,6 +21,7 @@ Route::post("/login", [AuthController::class, 'login']);
 Route::get("/logout", [AuthController::class, "logout"]);
 
 Route::middleware([AdminAuth::class])->group(function () {
+
     Route::prefix('/dashboard')->group(function () {
         Route::get('/spread', [DashboardController::class, 'showSpread'])->name('dashboard.spread');
         Route::get('/evaluation', [DashboardController::class, 'showEvaluation'])->name('dashboard.evaluation');
@@ -28,6 +29,7 @@ Route::middleware([AdminAuth::class])->group(function () {
 
         Route::prefix('/data')->group(function () {
             Route::get('/spread', [DashboardController::class, 'spread'])->name('dashboard.data.spread');
+            Route::get('/evaluation');
         });
     });
     Route::resource('student', StudentController::class);

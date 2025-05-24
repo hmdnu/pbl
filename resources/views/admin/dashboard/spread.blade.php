@@ -4,7 +4,7 @@
 
 
 @section('admin-content')
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <section class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1>Dashboard Sebaran</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group me-2">
@@ -16,28 +16,35 @@
                 This week
             </button>
         </div>
-    </div>
+    </section>
 
-    <div>
-        <canvas class="w-100" id="myChart" width="400" height="100"></canvas>
-    </div>
+    {{-- graphic --}}
+    <section class="mt-5">
+        <div>
+            <h4>Sebaran profesi lulusan</h4>
+            <canvas class="w-100" id="sebaran-profesi-lulusan" width="400" height="100"></canvas>
+        </div>
+    </section>
 
-    <h2>Section title</h2>
-    <div class="table-responsive">
-        <table class="table table-striped table-sm">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Header</th>
-                    <th scope="col">Header</th>
-                    <th scope="col">Header</th>
-                    <th scope="col">Header</th>
-                </tr>
-            </thead>
-            <tbody>
+    {{-- table --}}
+    <section class="mt-5">
+        <h2>Tabel Sebaran Lingkup Tempat Kerja dan Kesesuaian Profesi</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Header</th>
+                        <th scope="col">Header</th>
+                        <th scope="col">Header</th>
+                        <th scope="col">Header</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+    </section>
     </div>
     @vite('resources/js/dashboard/spread.js')
 @endsection

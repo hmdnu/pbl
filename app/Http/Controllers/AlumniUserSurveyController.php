@@ -6,14 +6,9 @@ use Illuminate\Http\Request;
 
 class AlumniUserSurveyController extends Controller
 {
-    public function showAgreement()
+    public function index()
     {
-        return view('survey.alumni_users.agreement');
-    }
-
-    public function showForm()
-    {
-        return view('survey.alumni_users.form');
+        return view('survey.alumni-users.form');
     }
 
     public function submitAgreement(Request $request)

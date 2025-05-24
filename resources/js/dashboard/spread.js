@@ -1,37 +1,11 @@
-/* globals Chart:false, feather:false */
-
-(async function () {
-    "use strict";
-    feather.replace({ "aria-hidden": "true" });
-
-    const datasets = {
-        labels: [],
-        data: [],
-    };
-    const data = await getData();
-    data.map((d) => {
-        datasets.labels.push(d.title);
-        datasets.data.push(d.count);
-    });
-
-    // Graphs
-    var ctx = document.getElementById("myChart");
-    // eslint-disable-next-line no-unused-vars
-    var myChart = new Chart(ctx, {
-        type: "pie",
-        data: {
-            labels: datasets.labels,
-            datasets: [
-                {
-                    label: "My First Dataset",
-                    data: datasets.data,
-                    backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)", "rgb(255, 205, 86)"],
-                    hoverOffset: 4,
-                },
-            ],
-        },
-    });
-})();
+function getRandomColor() {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
 
 async function getData() {
     try {
@@ -41,3 +15,41 @@ async function getData() {
         console.error(error);
     }
 }
+
+async function showData() {
+    const datasets = {
+        labels: [],
+        data: [],
+    };
+    const data = await getData();
+    data.map((d) => {
+        datasets.labels.push(d.profession_name);
+        datasets.data.push(d.percentage);
+    });
+
+    const backgroundColors = datasets.labels.map(() => getRandomColor());
+
+    // Graphs
+    var ctx = document.getElementById("sebaran-profesi-lulusan");
+    // eslint-disable-next-line no-unused-vars
+    new Chart(ctx, {
+        type: "pie",
+        data: {
+            labels: datasets.labels,
+            datasets: [
+                {
+                    data: datasets.data,
+                    backgroundColor: backgroundColors,
+                    hoverOffset: 4,
+                },
+            ],
+        },
+    });
+}
+
+(async function () {
+    "use strict";
+    feather.replace({ "aria-hidden": "true" });
+
+    await showData();
+})();

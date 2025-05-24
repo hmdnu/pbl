@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
     public function showSpread()
     {
         return view("admin.dashboard.spread");
     }
+
     public function showEvaluation()
     {
         return view("admin.dashboard.evaluation");
@@ -21,21 +22,30 @@ class DashboardController extends Controller
 
     public function spread()
     {
-        $data = [
-            [
-                'title' => 'Data 1',
-                'count' => 20
-            ],
-            [
-                'title' => 'Data 2',
-                'count' => 10
-            ],
-            [
-                'title' => 'Data 3',
-                'count' => 30
-            ]
-        ];
+        $total = DB::table('alumni_surveys')->count();
 
-        return response()->json($data);
+        $rawData = DB::table('alumni_surveys as asy')
+            ->join('professions as p', 'asy.profession_id', '=', 'p.id')
+            ->select(
+                'p.name as profession_name',
+                DB::raw("ROUND(COUNT(*) * 100.0 / $total) as percentage")
+            )
+            ->groupBy('p.name')
+            ->orderByDesc('percentage')
+            ->get();
+
+        $top10 = $rawData->take(10);
+        $othersPercentage = $rawData->slice(10)->sum('percentage');
+
+        $finalData = $top10->toArray();
+        if ($othersPercentage > 0) {
+            $finalData[] = (object) [
+                'profession_name' => 'Lainnya',
+                'percentage' => $othersPercentage
+            ];
+        }
+
+        return response()->json($finalData);
     }
+
 }
