@@ -46,7 +46,7 @@
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">Id</th>
                         <th scope="col">Aspek</th>
                         <th scope="col">Sangat Baik</th>
                         <th scope="col">Baik</th>

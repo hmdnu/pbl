@@ -1,0 +1,78 @@
+.hero {
+    background: linear-gradient(to right, #003865, #005792);
+    color: white;
+    padding: 140px 0 100px;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+/* Tombol Survey */
+.btn-warning {
+    background-color: #ffc107;
+    color: #003865;
+    font-weight: bold;
+    border-radius: 12px;
+    transition: all 0.3s ease-in-out;
+}
+.btn-warning:hover {
+    background-color: #e0a800;
+    transform: scale(1.05);
+}
+
+.btn-outline-light {
+    color: white;
+    border: 3px solid white;
+    font-weight: bold;
+    border-radius: 12px;
+    transition: all 0.3s ease-in-out;
+}
+.btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+}
+
+/* Tombol Admin */
+.btn-sm {
+    font-size: 0.9rem;
+    border-radius: 8px;
+}
+
+/* link kampus */
+.btn-glow {
+    background-color: #4c00ff;
+    color: white;
+    padding: 12px 26px;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(76, 0, 255, 0.4);
+}
+.btn-glow:hover {
+    box-shadow: 0 0 20px rgba(76, 0, 255, 0.6), 0 0 40px rgba(76, 0, 255, 0.4);
+    transform: scale(1.05);
+    text-decoration: none;
+}
+
+/* Logo polinema */
+.hero .top-logo {
+    display: flex;
+    align-items: center;
+}
+.hero .top-logo img {
+    height: 60px;
+    margin-right: 10px;
+}
+
+.btn-gradient-primary {
+    background: linear-gradient(45deg, #007bff, #6610f2);
+    color: #fff;
+    border: none;
+}
+.btn-gradient-primary:hover {
+    opacity: 0.9;
+}
