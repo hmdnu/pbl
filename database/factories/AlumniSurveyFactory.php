@@ -27,7 +27,7 @@ class AlumniSurveyFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'first_work_date' => $this->faker->dateTimeBetween('-4 years', 'now'),
             'waiting_period' => $this->faker->numberBetween(0, 12),
-            'institution_type' => $this->faker->randomElement(['Pemerintah', 'Swasta', 'BUMN', 'Lainnya']),
+            'institution_type' => $this->faker->randomElement(['Pemerintah', 'Swasta', 'BUMN', 'Pendidikan Tinggi']),
             'institution_name' => $this->faker->company,
             'institution_location' => $this->faker->city,
             'first_institution_work_date' => $this->faker->dateTimeBetween('-4 years', 'now'),

@@ -47,9 +47,51 @@ async function showData() {
     });
 }
 
+async function getInstitutionTypeData() {
+    try {
+        const response = await fetch("/dashboard/data/institution-type");
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function showInstitutionTypeData() {
+    const datasets = {
+        labels: [],
+        data: [],
+    };
+    const data = await getInstitutionTypeData();
+    data.map((d) => {
+        datasets.labels.push(d.institution_name);
+        datasets.data.push(d.percentage);
+    });
+
+    const backgroundColors = datasets.labels.map(() => getRandomColor());
+
+    const ctx = document.getElementById("sebaran-institution-type");
+    console.log(ctx)
+    new Chart(ctx, {
+        type: "pie",
+        data: {
+            labels: datasets.labels,
+            datasets: [
+                {
+                    data: datasets.data,
+                    backgroundColor: backgroundColors,
+                    hoverOffset: 4,
+                },
+            ],
+        },
+    });
+}
+
+
 (async function () {
     "use strict";
     feather.replace({ "aria-hidden": "true" });
 
     await showData();
+    await showInstitutionTypeData();
+ 
 })();

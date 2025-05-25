@@ -24,11 +24,13 @@ Route::middleware([AdminAuth::class])->group(function () {
 
     Route::prefix('/dashboard')->group(function () {
         Route::get('/spread', [DashboardController::class, 'showSpread'])->name('dashboard.spread');
+        Route::get('/institution-type', [DashboardController::class, 'showSpreadInstitution'])->name('dashboard.institution-type');
         Route::get('/evaluation', [DashboardController::class, 'showEvaluation'])->name('dashboard.evaluation');
         Route::get('/wait-periode', [DashboardController::class, 'showWaitPeriode'])->name('dashboard.wait-periode');
 
         Route::prefix('/data')->group(function () {
             Route::get('/spread', [DashboardController::class, 'spread'])->name('dashboard.data.spread');
+            Route::get('/institution-type', [DashboardController::class, 'getInstitutionTypeSpread'])->name('dashboard.data.institution-type');
             Route::get('/evaluation');
         });
     });
