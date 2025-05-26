@@ -13,7 +13,8 @@ return new class extends Migration {
         Schema::create('alumni_surveys', function (Blueprint $table) {
             $table->id();
             $table->string('student_nim');
-            $table->unsignedBigInteger('profession_id');
+            $table->unsignedBigInteger('profession_category_id');
+            $table->unsignedBigInteger('profession_id')->nullable();
 
             $table->string('phone');
             $table->string('email');
@@ -28,10 +29,10 @@ return new class extends Migration {
             $table->string('supervisor_name')->nullable();
             $table->string('supervisor_position')->nullable();
             $table->string('supervisor_email')->nullable();
-
             $table->timestamps();
 
             $table->foreign('student_nim')->references('nim')->on('students');
+            $table->foreign('profession_category_id')->references('id')->on('profession_categories');
             $table->foreign('profession_id')->references('id')->on('professions');
         });
     }

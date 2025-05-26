@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\ProgramStudy;
 
@@ -38,6 +39,8 @@ class StudentController extends Controller
             'graduation_date' => 'required|date',
             'program_study_id' => 'required|exists:program_studies,id',
         ]);
+
+        $validated['graduation_date'] = Carbon::parse('dd-mm-yyyy');
 
         try {
             Student::create($validated);

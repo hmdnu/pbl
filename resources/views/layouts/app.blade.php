@@ -9,7 +9,13 @@
     @vite('resources/js/app.js')
     @stack('heads')
     <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/
+    <style>
+        .flatpickr-input[readonly] {
+            background-color: white !important;
+            cursor: default;
+        }
+    </style>
 </head>
 
 <body>

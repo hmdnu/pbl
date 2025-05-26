@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Student;
+use Carbon\Carbon;
 
 class StudentSeeder extends Seeder
 {
@@ -16,7 +17,7 @@ class StudentSeeder extends Seeder
             'nim' => '123',
             'name' => 'siluman rubah',
             'email' => 'daniuyan71@gmail.com',
-            'graduation_date' => '05-01-2025',
+            'graduation_date' => Carbon::parse('05-01-2025')->format('Y-m-d'),
             'program_study_id' => '1',
             'has_filled_survey' => '0',
             'created_at' => now(),

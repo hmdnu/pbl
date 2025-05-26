@@ -14,6 +14,11 @@ class ProfessionCategory extends Model
 
     public function profession()
     {
-        return $this->hasMany(Profession::class, 'category_id');
+        return $this->hasMany(Profession::class, 'profession_id');
+    }
+
+    public function professionCategory()
+    {
+        return $this->hasMany(ProfessionCategory::class, 'profession_category_id');
     }
 }
