@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Student;
 use App\Models\UniqueUrl;
 use Closure;
 use Illuminate\Http\Request;
@@ -24,6 +25,13 @@ class VerifyUserForm
 
         if (!$exists) {
             return redirect('/');
+        }
+
+        $nim = UniqueUrl::where('unique_code', $request->route('code'))->first();
+        $student = Student::find($nim->nim);
+
+        if ($student->has_filled_survey) {
+            return redirect()->route('view.alumni.done');
         }
 
         return $next($request);
