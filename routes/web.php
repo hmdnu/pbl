@@ -45,6 +45,7 @@ Route::prefix('/survey')->group(function () {
         Route::get('/agreement', fn() => view('survey.alumni_users.agreement'))->name('view.alumni-user.agreement');
         Route::post('/send-email/{role}', [UniqueUrlController::class, 'sendEmail'])->name('post.alumni-user.send-email');
     });
+
     Route::prefix('/alumni')->group(function () {
         Route::get('/validation', fn() => view('survey.alumni.validation'))->name('view.alumni.validation');
         Route::post('/send-email/{role}', [UniqueUrlController::class, 'sendEmail'])->name('post.alumni.send-email');
@@ -55,8 +56,11 @@ Route::prefix('/survey')->group(function () {
 
         Route::get('/form/alumni/{code}', [AlumniSurveyController::class, 'index'])->name('view.alumni.form');
         Route::post('/form/alumni/{code}', [AlumniSurveyController::class, 'storeFirstForm'])->name('post.alumni.form');
-        Route::get('/form/alumni/{code}/2/{category}', [AlumniSurveyController::class, 'storeSecondForm'])->name('view.alumni.form.2');
+        Route::get('/form/alumni/{code}/2/{category}', [AlumniSurveyController::class, 'secondForm'])->name('view.alumni.form.2');
+        Route::post('/form/alumni/{code}/2', [AlumniSurveyController::class, 'storeSecondForm'])->name('post.alumni.form.2');
     });
+
+    Route::get('/alumni/done', fn() => view('survey.alumni.done'))->name('view.alumni.done');
 });
 
 Route::resource('test-crud', CrudTestController::class);

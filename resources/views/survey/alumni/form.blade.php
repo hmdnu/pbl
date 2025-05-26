@@ -29,6 +29,15 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="graduation-date" class="form-label">Tanggal Lulus</label>
+                        <input type="text" name="graduation-date" id="graduation-date" class="form-control"
+                            value="{{ $student->graduation_date }}" required readonly>
+                        @error('graduation-date')
+                            <p class="text-danger mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" name="email" id="email" class="form-control"
                             placeholder="Masukkan alamat email Anda" required>
@@ -69,15 +78,5 @@
         </div>
     </div>
 
-    <script>
-        const selectProfessionCategory = document.getElementById('profession-category');
-        const btn = document.getElementById('btn');
-        selectProfessionCategory.addEventListener('change', (e) => {
-            if (e.target.value === '3') {
-                btn.textContent = 'Kirim';
-            } else {
-                btn.textContent = 'Selanjutnya'
-            }
-        })
-    </script>
+    @vite('resources/js/alumniFirstForm.js')
 @endsection
