@@ -8,6 +8,12 @@
     <title> @yield('title') </title>
     @vite('resources/js/app.js')
     @stack('heads')
+    <style>
+        .flatpickr-input[readonly] {
+            background-color: white !important;
+            cursor: default;
+        }
+    </style>
 </head>
 
 <body>
