@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -13,14 +13,6 @@ class AdminController extends Controller
     public function index()
     {
         return view("admin.admin.index", ["admins" => User::all()]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -41,6 +33,14 @@ class AdminController extends Controller
         ]);
 
         return back()->with('success', 'Data user berhasil disimpan');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
     }
 
     /**

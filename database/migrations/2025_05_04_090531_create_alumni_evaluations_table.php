@@ -12,10 +12,7 @@ return new class extends Migration {
     {
         Schema::create('alumni_evaluations', function (Blueprint $table) {
             $table->id();
-
             $table->string('student_nim'); // mahasiswa_nim
-            $table->foreign('student_nim')->references('nim')->on('students');
-
             $table->string('teamwork'); // kerjasama_tim
             $table->string('it_expertise'); // keahlian_di_bidang_ti
             $table->string('foreign_language'); // kemampuan_berbahasa_asing
@@ -24,8 +21,9 @@ return new class extends Migration {
             $table->string('leadership'); // kepemimpinan
             $table->string('work_ethic'); // etos_kerja
             $table->string('unmet_competencies'); // kompetensi_yg_belum_terpenuhi
-
             $table->timestamps();
+            
+            $table->foreign('student_nim')->references('nim')->on('students');
         });
     }
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -41,7 +40,7 @@ class DashboardController extends Controller
 
         $finalData = $top10->toArray();
         if ($othersPercentage > 0) {
-            $finalData[] = (object) [
+            $finalData[] = (object)[
                 'profession_name' => 'Lainnya',
                 'percentage' => $othersPercentage
             ];

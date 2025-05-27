@@ -15,12 +15,15 @@ class SendUniqueUrl extends Mailable
 
 
     private string $uniqueCode;
+    private string $type;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($uniqueCode)
+    public function __construct(string $uniqueCode, string $type)
     {
         $this->uniqueCode = $uniqueCode;
+        $this->type = $type;
     }
 
     /**
@@ -29,8 +32,8 @@ class SendUniqueUrl extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('daniuyan71@gmail.com', 'Nerots'),
-            subject: 'Send Unique Url',
+            from: new Address('daniuyan71@gmail.com', 'Admin Tracer Study Polinema'),
+            subject: 'Pengisian Formulir Tracer Study Politeknik Negeri Malang',
         );
     }
 
@@ -40,9 +43,10 @@ class SendUniqueUrl extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.otp',
+            view: 'mail.mail',
             with: [
-                'otp' => $this->uniqueCode
+                'unique_url' => $this->uniqueCode,
+                'type' => $this->type,
             ]
         );
     }

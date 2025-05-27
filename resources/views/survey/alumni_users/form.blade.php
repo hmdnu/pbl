@@ -1,90 +1,132 @@
-@extends('layouts.app')
+@extends('layouts.user')
 
 @section('title', 'Form Survey Pengguna Alumni')
 
-@section('content')
-    <div class="container mt-5">
-        <div class="card mx-auto shadow" style="max-width: 1000px;">
-            <div class="card-body">
-                <h2 class="text-center mb-4">Form Survey Pengguna Alumni</h2>
+@section('user-content')
+    <div class="container py-5 d-flex justify-content-center">
+        <div class="card w-75 p-3">
+            <h4 class="mb-0 text-center">Formulir Survei Pengguna Alumni</h4>
 
-                <form method="POST" action="/survey/alumni-user/form">
+            <div class="card-body bg-light mt-3">
+                <form method="POST" action={{route('post.alumni-user.form', ['code' => $code])}}>
                     @csrf
+                    <div class="mb-3">
+                        <label for="student-nim" class="form-label">NIM Mahasiswa</label>
+                        <input type="text" name="student_nim" class="form-control" id="student-nim"
+                               value="{{ $student->nim }}" readonly>
+                        @error('student_nim')
+                        <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                    <!-- Nama -->
+                    <div class="mb-3">
+                        <label for="student-name" class="form-label">Nama Alumni</label>
+                        <input type="text" name="student_name" class="form-control" id="student-name"
+                               value="{{$student->name}}"
+                               readonly>
+                        @error('student_name')
+                        <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="study-program" class="form-label">Program Studi Alumni</label>
+                        <input type="text" name="study_program" class="form-control" id="study-program"
+                               value="{{ $program_study }}"
+                               required readonly>
+                        @error('student_study_program')
+                        <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                     <div class="mb-3">
                         <label for="name" class="form-label">Nama</label>
                         <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}"
-                            required>
+                               required placeholder="Masukan nama anda">
                         @error('name')
-                            <div class="text-danger mt-1">{{ $message }}</div>
+                        <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <!-- Jenis Instansi -->
                     <div class="mb-3">
-                        <label for="institution_type" class="form-label">Jenis Instansi</label>
-                        <select name="institution_type" class="form-select" id="institution_type" required>
-                            <option value="">-- Pilih Jenis Instansi --</option>
-                            <option value="pendidikan_tinggi"
-                                {{ old('institution_type') == 'pendidikan_tinggi' ? 'selected' : '' }}>Pendidikan Tinggi
+                        <label for="institution-type" class="form-label">Jenis Instansi</label>
+                        <select name="institution_type" id="institution-type" class="form-select">
+                            <option selected disabled>Pilih jenis instansi</option>
+                            <option value="pendidikan-tinggi"
+                                {{ old('institution_type') == 'pendidikan-tinggi' ? 'selected' : '' }}>Pendidikan Tinggi
                             </option>
-                            <option value="instansi_pemerintah"
-                                {{ old('institution_type') == 'instansi_pemerintah' ? 'selected' : '' }}>Instansi Pemerintah
+                            <option value="instansi-pemerintah"
+                                {{ old('institution_type') == 'instansi-pemerintah' ? 'selected' : '' }}>Instansi
+                                Pemerintah
                             </option>
-                            <option value="perusahaan_swasta"
-                                {{ old('institution_type') == 'perusahaan_swasta' ? 'selected' : '' }}>Perusahaan Swasta
-                            </option>
-                            <option value="BUMN" {{ old('institution_type') == 'BUMN' ? 'selected' : '' }}>BUMN</option>
-                            <option value="lainnya" {{ old('institution_type') == 'lainnya' ? 'selected' : '' }}>Lainnya
+                            <option value="bumn" {{ old('institution_type') == 'bumn' ? 'selected' : '' }}>BUMN</option>
+                            <option value="swasta" {{ old('institution_type') == 'swasta' ? 'selected' : '' }}>
+                                Perusahaan
+                                Swasta
                             </option>
                         </select>
                         @error('institution_type')
-                            <div class="text-danger mt-1">{{ $message }}</div>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
-                    <!-- Nama Instansi -->
                     <div class="mb-3">
                         <label for="institution_name" class="form-label">Nama Instansi</label>
                         <input type="text" name="institution_name" class="form-control" id="institution_name"
-                            value="{{ old('institution_name') }}" required>
+                               value="{{ old('institution_name') }}" required placeholder="Masukan nama instansi">
                         @error('institution_name')
-                            <div class="text-danger mt-1">{{ $message }}</div>
+                        <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <!-- Jabatan -->
+                    <div class="mb-3">
+                        <label for="institution-scope" class="form-label">Skala Instansi</label>
+                        <select name="institution_scope" id="institution-scope" class="form-select">
+                            <option selected disabled>Pilih skala instansi</option>
+                            <option value="nasional" {{ old('institution_scope') == 'nasional' ? 'selected' : '' }}>
+                                Nasional
+                            </option>
+                            <option
+                                value="internasional" {{ old('institution_scope') == 'internasional' ? 'selected' : '' }}>
+                                Internasional
+                            </option>
+                            <option value="wirausaha" {{ old('institution_scope') == 'wirausaha' ? 'selected' : '' }}>
+                                Wirausaha
+                            </option>
+                        </select>
+                        @error('institution_scope')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Alamat Instansi</label>
+                        <input type="text" name="location" class="form-control" id="location"
+                               value="{{ old('location') }}" required placeholder="Masukan lokasi anda">
+                        @error('location')
+                        <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+
                     <div class="mb-3">
                         <label for="position" class="form-label">Jabatan</label>
                         <input type="text" name="position" class="form-control" id="position"
-                            value="{{ old('position') }}" required>
+                               value="{{ old('position') }}" required placeholder="Masukan jabatan anda">
                         @error('position')
-                            <div class="text-danger mt-1">{{ $message }}</div>
+                        <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <!-- Email Instansi -->
                     <div class="mb-3">
                         <label for="email" class="form-label">Email Instansi</label>
-                        <input type="email" name="email" class="form-control" id="email"
-                            value="{{ old('email') }}" required>
+                        <input type="email" name="email" class="form-control" id="email" value="{{ old('email') }}"
+                               required placeholder="Masukan email instansi">
                         @error('email')
-                            <div class="text-danger mt-1">{{ $message }}</div>
+                        <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <!-- NIM Mahasiswa -->
-                    <div class="mb-3">
-                        <label for="student_nim" class="form-label">NIM Mahasiswa</label>
-                        <input type="text" name="student_nim" class="form-control" id="student_nim"
-                            value="{{ old('student_nim') }}" required>
-                        @error('student_nim')
-                            <div class="text-danger mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- Penilaian Soft Skill -->
                     @php
                         $questions = [
                             'teamwork' => 'Kemampuan Kerja Sama dalam Tim',
@@ -107,31 +149,28 @@
                                 @foreach ($options as $option)
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="{{ $key }}"
-                                            value="{{ $option }}" {{ old($key) == $option ? 'checked' : '' }}
-                                            required>
+                                               value="{{ $option }}"
+                                               {{ old($key) == $option ? 'checked' : '' }} required>
                                         <label class="form-check-label">{{ $option }}</label>
                                     </div>
                                 @endforeach
                                 @error($key)
-                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                     @endforeach
 
-                    <!-- Saran untuk Kurikulum -->
                     <div class="mb-3">
                         <label for="curriculum_suggestion" class="form-label">Saran untuk Kurikulum</label>
-                        <textarea name="curriculum_suggestion" class="form-control" id="curriculum_suggestion" rows="4" required>{{ old('curriculum_suggestion') }}</textarea>
+                        <textarea name="curriculum_suggestion" class="form-control" id="curriculum_suggestion" rows="4"
+                                  required>{{ old('curriculum_suggestion') }}</textarea>
                         @error('curriculum_suggestion')
-                            <div class="text-danger mt-1">{{ $message }}</div>
+                        <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <!-- Submit Button -->
-                    <div class="mb-3 text-center">
-                        <button type="submit" class="btn btn-primary w-100">Kirim</button>
-                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Kirim</button>
                 </form>
             </div>
         </div>
