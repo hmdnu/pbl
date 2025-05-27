@@ -16,6 +16,7 @@ class DashboardController extends Controller
     {
         return view("admin.dashboard.evaluation");
     }
+
     public function showWaitPeriode()
     {
         return view("admin.dashboard.wait_periode");
@@ -49,25 +50,4 @@ class DashboardController extends Controller
         return response()->json($finalData);
     }
 
-    public function spreadTable()
-    {
-        $data = DB::table('students', 's')
-            ->leftJoin('alumni_surveys AS asy', function ($join) {
-                $join->on('s.nim', '=', 'asy.student_nim');
-            })
-            ->leftJoin('professions AS p', function ($join) {
-                $join->on('asy.profession_id', '=', 'p.id');
-            })
-            ->select([
-                DB::raw('YEAR(s.graduation_date) AS tahun_lulusan'),
-                DB::raw('COUNT(*) AS jumlah_lulusan'),
-                DB::raw('SUM(s.has_filled_survey = 1) AS jumlah_lulusan_yg_terlacak'),
-                DB::raw('SUM(s.has_filled_survey = 1 AND p.category_id IS NULL = "Bidang Infokom") AS jumlah_profesi_infokom'),
-                DB::raw('SUM(s.has_filled_survey = 1 AND (p.category_id IS NULL OR p.category_id != "Bidang Infokom")) AS jumlah_profesi_non_infokom'),
-            ])
-            ->groupByRaw('YEAR(s.graduation_date)')
-            ->orderByRaw('YEAR(s.graduation_date)')
-            ->get();
-        return response()->json($data);
-    }
 }

@@ -12,15 +12,16 @@ class AlumniSurvey extends Model
 
     protected $fillable = [
         'student_nim',
+        'profession_category_id',
         'profession_id',
         'phone',
         'email',
         'first_work_date',
         'waiting_period',
-        'agency_type',
-        'agency_name',
-        'agency_location',
-        'first_agency_work_date',
+        'institution_type',
+        'institution_name',
+        'institution_location',
+        'first_institution_work_date',
         'supervisor_name',
         'supervisor_position',
         'supervisor_email',
@@ -34,5 +35,10 @@ class AlumniSurvey extends Model
     public function profession()
     {
         return $this->belongsTo(Profession::class, 'profession_id');
+    }
+
+    public function professionCategory()
+    {
+        return $this->belongsTo(ProfessionCategory::class, 'profession_category_id');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\ProfessionCategory;
 use App\Models\Student;
 use App\Models\Profession;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,6 +24,7 @@ class AlumniSurveyFactory extends Factory
         return [
             'student_nim' => Student::inRandomOrder()->first()->nim,
             'profession_id' => Profession::inRandomOrder()->first()->id,
+            'profession_category_id' => ProfessionCategory::inRandomOrder()->first()->id,
             'phone' => $this->faker->phoneNumber,
             'email' => $this->faker->unique()->safeEmail,
             'first_work_date' => $this->faker->dateTimeBetween('-4 years', 'now'),
