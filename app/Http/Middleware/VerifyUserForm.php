@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\AlumniUserSurvey;
 use App\Models\Student;
 use App\Models\UniqueUrl;
 use Closure;
@@ -13,7 +14,7 @@ class VerifyUserForm
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param Closure(Request): (Response) $next
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -28,12 +29,29 @@ class VerifyUserForm
         }
 
         $nim = UniqueUrl::where('unique_code', $request->route('code'))->first();
-        $student = Student::find($nim->nim);
 
+        if ($role === 'alumni') {
+            return $this->handleAlumni($request, $next, $nim->nim);
+        }
+
+        return $this->handleAlumniUser($request, $next, $nim->nim);
+    }
+
+    private function handleAlumni(Request $request, Closure $next, string $nim)
+    {
+        $student = Student::find($nim);
         if ($student->has_filled_survey) {
             return redirect()->route('view.alumni.done');
         }
+        return $next($request);
+    }
 
+    private function handleAlumniUser(Request $request, Closure $next, string $nim)
+    {
+        $exist = AlumniUserSurvey::where('student_nim', $nim)->exists();
+        if ($exist) {
+            return redirect()->route('view.alumni.done');
+        }
         return $next($request);
     }
 }

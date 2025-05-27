@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->string('name'); // nama
             $table->string('institution_type'); // jenis_instansi
             $table->string('institution_name'); // nama_instansi
+            $table->string('institution_location'); // lokasi_instansi
+            $table->string('institution_scale'); // skala_instansi
             $table->string('position'); // jabatan
             $table->string('email'); // email
             $table->string('student_nim'); // mahasiswa_nim

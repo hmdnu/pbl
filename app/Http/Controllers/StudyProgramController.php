@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\ProgramStudy;
+use Illuminate\Http\Request;
 
 class StudyProgramController extends Controller
 {
@@ -13,14 +13,6 @@ class StudyProgramController extends Controller
     public function index()
     {
         return view("admin.program_study.index", ["programstudies" => ProgramStudy::all()]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -37,6 +29,14 @@ class StudyProgramController extends Controller
         ]);
 
         return back()->with('success', 'Data berhasil ditambahkan');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
     }
 
     /**

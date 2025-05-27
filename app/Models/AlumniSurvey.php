@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 
 class AlumniSurvey extends Model
@@ -21,6 +21,7 @@ class AlumniSurvey extends Model
         'institution_type',
         'institution_name',
         'institution_location',
+        'institution_scale',
         'first_institution_work_date',
         'supervisor_name',
         'supervisor_position',

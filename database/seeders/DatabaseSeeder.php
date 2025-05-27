@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             ProfessionCategorySeeder::class,
             ProfessionSeeder::class,
-            AlumniSurveySeeder::class,
-            AlumniEvaluationSeeder::class,
-            AlumniUserSurveySeeder::class,
+//            AlumniSurveySeeder::class,
+//            AlumniEvaluationSeeder::class,
+//            AlumniUserSurveySeeder::class,
         ]);
     }
 }

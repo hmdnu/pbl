@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->string('institution_type')->nullable();
             $table->string('institution_name')->nullable();
             $table->string('institution_location')->nullable();
+            $table->string('institution_scale')->nullable();
             $table->date('first_institution_work_date')->nullable();
 
             $table->string('supervisor_name')->nullable();

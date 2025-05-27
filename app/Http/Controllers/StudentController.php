@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProgramStudy;
 use App\Models\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Models\ProgramStudy;
 
 class StudentController extends Controller
 {
@@ -18,14 +18,6 @@ class StudentController extends Controller
         $program_studies = ProgramStudy::all();
 
         return view('admin.student.index', compact('students', 'program_studies'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -48,6 +40,14 @@ class StudentController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data');
         }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
     }
 
     /**

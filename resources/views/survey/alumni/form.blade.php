@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.user')
 
 @section('title', 'Survey Alumni')
 
-@section('content')
+@section('user-content')
     <div class="container py-5 d-flex justify-content-center">
         <div class="card w-100 p-3">
             <h4 class="mb-0 text-center">Formulir Survei Alumni</h4>
@@ -13,45 +13,45 @@
                     <div class="mb-3">
                         <label for="nim" class="form-label">NIM</label>
                         <input type="text" name="nim" id="nim" class="form-control" value="{{ $student->nim }}"
-                            required readonly>
+                               required readonly>
                         @error('nim')
-                            <p class="text-danger mt-1">{{ $message }}</p>
+                        <p class="text-danger mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="mb-3">
                         <label for="name" class="form-label">Nama Lengkap</label>
                         <input type="text" name="name" id="name" class="form-control"
-                            value="{{ $student->name }}" required readonly>
+                               value="{{ $student->name }}" required readonly>
                         @error('name')
-                            <p class="text-danger mt-1">{{ $message }}</p>
+                        <p class="text-danger mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="mb-3">
                         <label for="graduation-date" class="form-label">Tanggal Lulus</label>
                         <input type="text" name="graduation-date" id="graduation-date" class="form-control"
-                            value="{{ $student->graduation_date }}" required readonly>
+                               value="{{ $student->graduation_date }}" required readonly>
                         @error('graduation-date')
-                            <p class="text-danger mt-1">{{ $message }}</p>
+                        <p class="text-danger mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" name="email" id="email" class="form-control"
-                            placeholder="Masukkan alamat email Anda" required>
+                               placeholder="Masukkan alamat email Anda" required>
                         @error('email')
-                            <p class="text-danger mt-1">{{ $message }}</p>
+                        <p class="text-danger mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="mb-3">
                         <label for="phone" class="form-label">Nomor Handphone</label>
                         <input type="text" name="phone" id="phone" class="form-control"
-                            placeholder="Masukkan nomor handphone Anda" required>
+                               placeholder="Masukkan nomor handphone Anda" required>
                         @error('phone')
-                            <p class="text-danger mt-1">{{ $message }}</p>
+                        <p class="text-danger mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -65,7 +65,7 @@
                             @endforeach
                         </select>
                         @error('profession-category')
-                            <p class="text-danger mt-1">{{ $message }}</p>
+                        <p class="text-danger mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 

@@ -11,27 +11,36 @@ use Illuminate\Support\Str;
 
 class UniqueUrlController extends Controller
 {
-    private const ROLES = ['alumni', 'alumni-user'];
+    private const array ROLES = ['alumni', 'alumni-user'];
 
-    private function generateUniqueUrl(string $host, string $role, string|null $nim): string
+    public function sendEmail(Request $request, string $role)
     {
-        $uniqueCode = Str::random(8);
-        $storedRole = $role === 'alumni-user' ? 'alumni_user' : $role;
+        if (!in_array($role, self::ROLES)) {
+            return redirect('/');
+        }
 
-        UniqueUrl::create([
-            'unique_code' => $uniqueCode,
-            'role' => $storedRole,
-            'nim' => $nim
-        ]);
+        $email = $this->validateEmail($request);
+        $nim = $this->validateAndGetNim($request);
 
-        return "$host/survey/form/$role/$uniqueCode";
-    }
+        if (!$nim) {
+            return back()->withErrors([
+                'nim' => 'NIM tidak ditemukan',
+            ])->withInput();
+        }
 
-    private function sendSurveyLink(string $role, string $email, string $host, string|null $nim): bool
-    {
-        $url = $this->generateUniqueUrl($host, $role, $nim);
-        Mail::to($email)->send(new SendUniqueUrl($url));
-        return true;
+        try {
+            $this->sendSurveyLink($role, $email, $request->getHost(), $nim);
+
+            return back()->with([
+                'message' => 'Link survey berhasil dikirim, silahkan cek email anda',
+            ])->withInput();
+        } catch (\Throwable $e) {
+            \Log::error('Failed to send survey link', ['error' => $e->getMessage()]);
+
+            return back()->with([
+                'message' => 'Gagal mengirim email, silahkan coba lagi',
+            ])->withInput();
+        }
     }
 
     private function validateEmail(Request $request): string
@@ -57,37 +66,24 @@ class UniqueUrlController extends Controller
         return Student::where('nim', $data['nim'])->value('nim');
     }
 
-    public function sendEmail(Request $request, string $role)
+    private function sendSurveyLink(string $role, string $email, string $host, string|null $nim): void
     {
-        if (!in_array($role, self::ROLES)) {
-            return redirect('/');
-        }
+        $url = $this->generateUniqueUrl($host, $role, $nim);
+        Mail::to($email)->send(new SendUniqueUrl($url, $role));
+    }
 
-        $email = $this->validateEmail($request);
-        $nim = null;
+    private function generateUniqueUrl(string $host, string $role, string|null $nim): string
+    {
+        $uniqueCode = Str::random(8);
+        $storedRole = $role === 'alumni-user' ? 'alumni_user' : $role;
 
-        if ($role === 'alumni') {
-            $nim = $this->validateAndGetNim($request);
+        UniqueUrl::create([
+            'unique_code' => $uniqueCode,
+            'role' => $storedRole,
+            'nim' => $nim
+        ]);
 
-            if (!$nim) {
-                return back()->with([
-                    'nim_not_found' => 'NIM tidak ditemukan',
-                ])->withInput();
-            }
-        }
-        try {
-            $this->sendSurveyLink($role, $email, $request->getHost(), $nim);
-
-            return back()->with([
-                'message' => 'Link survey berhasil dikirim, silahkan cek email anda',
-            ])->withInput();
-        } catch (\Throwable $e) {
-            \Log::error('Failed to send survey link', ['error' => $e->getMessage()]);
-
-            return back()->with([
-                'message' => 'Gagal mengirim email, silahkan coba lagi',
-            ])->withInput();
-        }
+        return "$host/survey/form/$role/$uniqueCode";
     }
 
 }

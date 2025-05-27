@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.user')
 
 @section('title', 'Selesai')
 
-@section('content')
+@section('user-content')
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-8 text-center">

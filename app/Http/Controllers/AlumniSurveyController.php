@@ -123,6 +123,7 @@ class AlumniSurveyController extends Controller
             'institution_type' => ['required'],
             'institution_name' => ['required', 'string', 'max:255'],
             'institution_location' => ['required', 'string', 'max:255'],
+            'institution_scale' => ['required'],
             'first_institution_work_date' => ['required'],
             'supervisor_name' => ['required', 'string', 'max:255'],
             'supervisor_position' => ['required', 'string', 'max:255'],
