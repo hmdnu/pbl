@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class DashboardController extends Controller
 {
     public function showSpread()
@@ -48,4 +49,22 @@ class DashboardController extends Controller
         return response()->json($finalData);
     }
 
+
+    public function waitperiodData()
+    {
+        $data = DB::table('students as s')
+            ->leftJoin('alumni_surveys as asy', 's.nim', '=', 'asy.student_nim')
+            ->selectRaw('
+            YEAR(s.graduation_date) AS tahun_lulusan,
+            COUNT(*) AS jumlah_lulusan,
+            COUNT(CASE WHEN s.has_filled_survey = 1 THEN 1 END) AS jumlah_lulusan_yg_terlacak,
+            ROUND(COALESCE(AVG(CASE WHEN s.has_filled_survey = 1 THEN asy.waiting_period ELSE NULL END), 0), 2) AS rata2_masa_tunggu
+        ')
+            ->groupBy(DB::raw('YEAR(s.graduation_date)'))
+            ->orderBy(DB::raw('YEAR(s.graduation_date)'), 'asc')
+            ->get();
+
+            // return view('dashboard.wait-periode', compact('data'));
+        return response()->json($data);
+    }
 }
