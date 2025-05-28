@@ -11,15 +11,13 @@
                 <div class="mb-3">
                     <label for="nip" class="form-label">NIP</label>
                     <input type="text" name="nip" id="nip" class="form-control" placeholder="Masukkan NIP Anda"
-                        required>
+                           required>
                 </div>
-
                 <div class="mb-3">
                     <label for="password" class="form-label">Kata Sandi</label>
                     <input type="password" name="password" id="password" class="form-control"
-                        placeholder="Masukkan kata sandi" required>
+                           placeholder="Masukkan kata sandi" required>
                 </div>
-
                 <button type="submit" class="btn btn-primary w-100">Masuk</button>
             </form>
 
