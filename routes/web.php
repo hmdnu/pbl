@@ -21,7 +21,6 @@ Route::post("/login", [AuthController::class, 'login']);
 Route::get("/logout", [AuthController::class, "logout"]);
 
 Route::middleware([AdminAuth::class])->group(function () {
-
     Route::prefix('/dashboard')->group(function () {
         Route::get('/spread', [DashboardController::class, 'showSpread'])->name('dashboard.spread');
         Route::get('/evaluation', [DashboardController::class, 'showEvaluation'])->name('dashboard.evaluation');
@@ -32,7 +31,18 @@ Route::middleware([AdminAuth::class])->group(function () {
             Route::get('/spread-table', [DashboardController::class, 'spreadTable'])->name('dashboard.data.spread-table');
             Route::get('/evaluation', [DashboardController::class, 'evaluation'])->name('dashboard.data.evaluation');
         });
+
+        Route::prefix('/download')->group(function () {
+            Route::get('/alumni-survey/recap', [AlumniSurveyController::class, 'exportAlumniSurveyRecap'])->name('dashboard.download.alumni-survey.recap');
+            Route::get('/alumni-user-survey/recap', [])->name('dashboard.download.alumni-user-survey.recap');
+        });
+
+        Route::view('/alumni-survey/recap', 'admin.dashboard.alumni_recap');
+        Route::view('/alumni-user-survey/recap', 'admin.dashboard.alumni_user_recap');
+        Route::view('/alumni-survey/unfilled', 'admin.dashboard.alumni_recap_unfilled');
+        Route::view('/alumni-user-survey/unfilled', 'admin.dashboard.alumni_user_recap_unfilled');
     });
+    
     Route::resource('student', StudentController::class);
     Route::resource('study-program', StudyProgramController::class);
     Route::resource('admin', AdminController::class);

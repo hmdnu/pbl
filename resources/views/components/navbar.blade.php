@@ -6,23 +6,17 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
+        
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('survey.alumni.form') ? 'active' : '' }}"
-                       href="{{ route('view.alumni.validation') }}">Survey Alumni</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('survey.alumni_user.form') ? 'active' : '' }}"
-                       href="{{ route('view.alumni-user.agreement') }}">Survey Pengguna Alumni</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                       href="{{ route('dashboard.spread') }}">Dashboard</a>
-                </li>
+                @foreach ($items as $item)
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs($item['active_when']) ? 'active' : '' }}"
+                           href="{{ route($item['route']) }}">
+                            {{ $item['name'] }}
+                        </a>
+                    </li>
+                @endforeach
             </ul>
         </div>
     </div>

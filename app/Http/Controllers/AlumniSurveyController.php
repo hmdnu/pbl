@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AlumniSurveyRecapExport;
 use App\Helpers\Helper;
 use App\Models\AlumniSurvey;
 use App\Models\Profession;
@@ -10,6 +11,8 @@ use App\Models\Student;
 use App\Models\UniqueUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Exception;
 
 class AlumniSurveyController extends Controller
 {
@@ -116,7 +119,7 @@ class AlumniSurveyController extends Controller
 
     private function validateSecondForm(Request $request)
     {
-        $validated = $request->validate([
+        return $request->validate([
             'profession' => ['required'],
             'graduation_date' => ['required'],
             'first_work_date' => ['required'],
@@ -143,6 +146,14 @@ class AlumniSurveyController extends Controller
             'supervisor_email.email' => 'Format email atasan tidak valid.',
             'waiting_period.required' => 'Masa tunggu wajib diisi'
         ]);
-        return $validated;
+    }
+
+    /**
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
+    public function exportAlumniSurveyRecap()
+    {
+        return Excel::download(new AlumniSurveyRecapExport, 'rekap-survey-alumni.xlsx');
     }
 }
