@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Profession;
 use App\Models\ProfessionCategory;
 use App\Models\Student;
-use App\Models\Profession;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Faker\Generator as Faker;
 
 
 /**
@@ -29,9 +28,10 @@ class AlumniSurveyFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'first_work_date' => $this->faker->dateTimeBetween('-4 years', 'now'),
             'waiting_period' => $this->faker->numberBetween(0, 12),
-            'institution_type' => $this->faker->randomElement(['Pemerintah', 'Swasta', 'BUMN', 'Lainnya']),
+            'institution_type' => $this->faker->randomElement(['pemerintah', 'swasta', 'bumn', 'lainnya']),
             'institution_name' => $this->faker->company,
             'institution_location' => $this->faker->city,
+            'institution_scale' => $this->faker->randomElement(['nasional', 'internasional', 'wirausaha']),
             'first_institution_work_date' => $this->faker->dateTimeBetween('-4 years', 'now'),
             'supervisor_name' => $this->faker->name,
             'supervisor_position' => $this->faker->jobTitle,

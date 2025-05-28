@@ -10,7 +10,6 @@
     @stack('heads')
     <script src="https://unpkg.com/feather-icons"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
     <style>
         .flatpickr-input[readonly] {
             background-color: white !important;
@@ -22,11 +21,10 @@
 <main class="root">
     @yield('content')
 </main>
-@stack('scripts')
-</body>
 
+@stack('scripts')
 <script>
     feather.replace();
 </script>
-
+</body>
 </html>

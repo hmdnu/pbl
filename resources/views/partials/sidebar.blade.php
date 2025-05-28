@@ -31,6 +31,11 @@
 
     $dashboardMenu = [
         [
+            'name' => 'Dashboard',
+            'link' => '/dashboard',
+            'icon' => 'map'
+        ],
+        [
             'name' => 'Sebaran',
             'link' => '/dashboard/spread',
             'icon' => 'map',
