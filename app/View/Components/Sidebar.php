@@ -71,6 +71,16 @@ class Sidebar extends Component
                 'name' => 'Rekap Survey Pengguna Alumni',
                 'link' => '/dashboard/alumni-user-survey/recap',
                 'icon' => 'map'
+            ],
+            [
+                'name' => 'Rekap Alumni Belum isi Survey',
+                'link' => '/dashboard/alumni-survey/unfilled',
+                'icon' => 'map',
+            ],
+            [
+                'name' => 'Rekap Pengguna Alumni Belum isi Survey',
+                'link' => '/dashboard/alumni-user-survey/unfilled',
+                'icon' => 'map',
             ]
         ];
     }
