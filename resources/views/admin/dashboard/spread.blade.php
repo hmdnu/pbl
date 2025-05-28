@@ -33,23 +33,61 @@
 
     {{-- table --}}
     <section class="mt-5">
-        <h2>Tabel Sebaran Lingkup Tempat Kerja dan Kesesuaian Profesi</h2>
-        <div class="table-responsive">
-            <table class="table table-striped table-sm">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Header</th>
-                    <th scope="col">Header</th>
-                    <th scope="col">Header</th>
-                    <th scope="col">Header</th>
-                </tr>
-                </thead>
-                <tbody>
+    <h2>Tabel Sebaran Lingkup Tempat Kerja dan Kesesuaian Profesi</h2>
+    <div class="card shadow-sm mb-4">
 
-                </tbody>
-            </table>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-sm" id="spread-table">
+                    <thead class="table-light">
+                        <tr>
+                            <th rowspan="2" style="text-align: center;">Tahun Lulus</th>
+                            <th rowspan="2" style="text-align: center;">Jumlah Lulusan</th>
+                            <th rowspan="2" style="text-align: center;">Jumlah Lulusan Yang Terlacak</th>
+                            <th rowspan="2" style="text-align: center;">Profesi Kerja Bidang Infokom</th>
+                            <th rowspan="2" style="text-align: center;">Profesi Kerja Bidang Non Infokom</th>
+                            <th colspan="3" style="text-align: center;">Lingkup Tempat Kerja</th>
+                        </tr>
+                        <tr>
+                            <th>Multinasional/Internasional</th>
+                            <th>Nasional</th>
+                            <th>Wirausaha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- data akan diisi dengan JavaScript -->
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </section>
-    @vite('resources/js/dashboard/spread.js')
+    </div>
+</section>
+
+@vite('resources/js/dashboard/spread.js')
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch("{{ route('dashboard.data.spread-table') }}")
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.querySelector("#spread-table tbody");
+                tbody.innerHTML = "";
+                data.forEach(item => {
+
+                    tbody.innerHTML += `
+                    <tr>
+                        <td>${item.tahun_lulusan ?? ''}</td>
+                        <td>${item.jumlah_lulusan ?? ''}</td>
+                        <td>${item.jumlah_lulusan_yg_terlacak ?? ''}</td>
+                        <td>${item.jumlah_profesi_infokom ?? ''}</td>
+                        <td>${item.jumlah_profesi_non_infokom ?? ''}</td>
+                        <td>${item.institution_scale_internasional ?? ''}</td>
+                        <td>${item.institution_scale_nasional ?? ''}</td>
+                        <td>${item.institution_scale_wirausaha ?? ''}</td>
+                    </tr>`;
+                });
+            });
+    });
+
+</script>
 @endsection
