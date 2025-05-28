@@ -50,6 +50,16 @@
             'link' => '/dashboard/wait-periode',
             'icon' => 'clock',
         ],
+        [
+            'name' => 'Rekap Survey Alumni',
+            'link' => '/dashboard/alumni-survey/recap',
+            'icon' => 'map'
+        ],
+        [
+            'name' => 'Rekap Survey Pengguna Alumni',
+            'link' => '/dashboard/alumni-user-survey/recap',
+            'icon' => 'map'
+        ]
     ];
 @endphp
 

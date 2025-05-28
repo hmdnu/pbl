@@ -31,6 +31,12 @@ Route::middleware([AdminAuth::class])->group(function () {
             Route::get('/spread', [DashboardController::class, 'spread'])->name('dashboard.data.spread');
             Route::get('/evaluation', [DashboardController::class, 'evaluation'])->name('dashboard.data.evaluation');
         });
+
+        Route::prefix('/download')->group(function () {
+            Route::get('/alumni-survey/recap', [AlumniSurveyController::class, 'exportAlumniSurveyRecap'])->name('dashboard.download.alumni-survey.recap');;
+        });
+        
+        Route::view('/alumni-survey/recap', 'admin.dashboard.alumni_recap');
     });
     Route::resource('student', StudentController::class);
     Route::resource('study-program', StudyProgramController::class);
