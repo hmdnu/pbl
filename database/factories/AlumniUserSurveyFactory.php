@@ -20,7 +20,7 @@ class AlumniUserSurveyFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'institution_type' => $this->faker->randomElement(['Pemerintah', 'Swasta', 'BUMN', 'Pendidikan Tinggi']),
+            'institution_type' => $this->faker->randomElement(['Pemerintah', 'Swasta', 'BUMN', 'Lainnya']),
             'institution_name' => $this->faker->company,
             'position' => $this->faker->jobTitle,
             'email' => $this->faker->unique()->safeEmail,
