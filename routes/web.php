@@ -29,6 +29,7 @@ Route::middleware([AdminAuth::class])->group(function () {
         Route::prefix('/data')->group(function () {
             Route::get('/spread', [DashboardController::class, 'spread'])->name('dashboard.data.spread');
             Route::get('/evaluation', [DashboardController::class, 'evaluation'])->name('dashboard.data.evaluation');
+            Route::get('/wait-period', [DashboardController::class, 'waitperiodData'])->name('dashboard.data.wait-periode');
         });
 
         Route::prefix('/download')->group(function () {
@@ -41,7 +42,7 @@ Route::middleware([AdminAuth::class])->group(function () {
         Route::view('/alumni-survey/unfilled', 'admin.dashboard.alumni_recap_unfilled');
         Route::view('/alumni-user-survey/unfilled', 'admin.dashboard.alumni_user_recap_unfilled');
     });
-    
+
     Route::resource('student', StudentController::class);
     Route::resource('study-program', StudyProgramController::class);
     Route::resource('admin', AdminController::class);
