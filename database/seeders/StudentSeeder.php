@@ -47,7 +47,6 @@ class StudentSeeder extends Seeder
         ];
 
         Student::factory()->count(10)->create();
-
         foreach ($data as $d) {
             Student::create($d);
         }
