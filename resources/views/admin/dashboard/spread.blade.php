@@ -25,9 +25,9 @@
             <h4>Sebaran profesi lulusan</h4>
             <canvas class="w-100" id="sebaran-profesi-lulusan" width="400" height="100"></canvas>
         </div>
-        <div>
-            <h4>Sebaran profesi lulusan</h4>
-            <canvas class="w-100" id="sebaran-institusi" width="400" height="100"></canvas>
+         <div>
+            <h4>Sebaran Institusi Tempat Kerja Lulusan</h4>
+            <canvas class="w-100" id="sebaran-institution-type" width="400" height="100"></canvas>
         </div>
     </section>
 

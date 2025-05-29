@@ -57,28 +57,28 @@ async function getInstitutionTypeData() {
 }
 
 async function showInstitutionTypeData() {
-    // const datasets = {
-    //     labels: [],
-    //     data: [],
-    // };
-    // const data = await getInstitutionTypeData();
-    // data.map((d) => {
-    //     datasets.labels.push(d.institution_name);
-    //     datasets.data.push(d.percentage);
-    // });
+    const datasets = {
+        labels: [],
+        data: [],
+    };
+    const data = await getInstitutionTypeData();
+    data.map((d) => {
+        datasets.labels.push(d.institution_name);
+        datasets.data.push(d.percentage);
+    });
 
-    // const backgroundColors = datasets.labels.map(() => getRandomColor());
+    const backgroundColors = datasets.labels.map(() => getRandomColor());
 
-    const ctx = document.getElementById("sebaran-institusi");
-    console.log(ctx);
+    const ctx = document.getElementById("sebaran-institution-type");
+    console.log(ctx)
     new Chart(ctx, {
         type: "pie",
         data: {
-            labels: ["1", "2"],
+            labels: datasets.labels,
             datasets: [
                 {
-                    data: [1, 2],
-                    backgroundColor: [],
+                    data: datasets.data,
+                    backgroundColor: backgroundColors,
                     hoverOffset: 4,
                 },
             ],
@@ -86,10 +86,12 @@ async function showInstitutionTypeData() {
     });
 }
 
+
 (async function () {
     "use strict";
     feather.replace({ "aria-hidden": "true" });
 
     await showData();
     await showInstitutionTypeData();
+
 })();

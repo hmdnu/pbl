@@ -23,6 +23,7 @@ Route::get("/logout", [AuthController::class, "logout"]);
 Route::middleware([AdminAuth::class])->group(function () {
     Route::prefix('/dashboard')->group(function () {
         Route::get('/spread', [DashboardController::class, 'showSpread'])->name('dashboard.spread');
+        Route::get('/institution-type', [DashboardController::class, 'showSpreadInstitution'])->name('dashboard.institution-type');
         Route::get('/evaluation', [DashboardController::class, 'showEvaluation'])->name('dashboard.evaluation');
         Route::get('/wait-period', [DashboardController::class, 'showWaitPeriode'])->name('dashboard.wait-periode');
 
@@ -30,6 +31,7 @@ Route::middleware([AdminAuth::class])->group(function () {
             Route::get('/spread', [DashboardController::class, 'spread'])->name('dashboard.data.spread');
             Route::get('/evaluation', [DashboardController::class, 'evaluation'])->name('dashboard.data.evaluation');
             Route::get('/wait-period', [DashboardController::class, 'waitperiodData'])->name('dashboard.data.wait-periode');
+            Route::get('/institution-type', [DashboardController::class, 'getInstitutionTypeSpread'])->name('dashboard.data.institution-type');
         });
 
         Route::prefix('/download')->group(function () {
