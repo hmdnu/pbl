@@ -1,3 +1,4 @@
+php artisan make:migration add_nip_to_users_table --table=users
 #!/usr/bin/env php
 <?php
 

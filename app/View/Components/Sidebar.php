@@ -59,7 +59,7 @@ class Sidebar extends Component
             ],
             [
                 'name' => 'Masa Tunggu',
-                'link' => '/dashboard/wait-periode',
+                'link' => '/dashboard/wait-period',
                 'icon' => 'clock',
             ],
             [
