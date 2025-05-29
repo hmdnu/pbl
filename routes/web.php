@@ -28,7 +28,6 @@ Route::middleware([AdminAuth::class])->group(function () {
 
         Route::prefix('/data')->group(function () {
             Route::get('/spread', [DashboardController::class, 'spread'])->name('dashboard.data.spread');
-            Route::get('/spread-table', [DashboardController::class, 'spreadTable'])->name('dashboard.data.spread-table');
             Route::get('/evaluation', [DashboardController::class, 'evaluation'])->name('dashboard.data.evaluation');
         });
 
