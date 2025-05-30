@@ -82,6 +82,35 @@ class DashboardController extends Controller
 
         return response()->json($finalData);
     }
+
+    public function spreadTable()
+    {
+        $data = DB::table('students', 's')
+            ->leftJoin('alumni_surveys AS asy', function ($join) {
+                $join->on('s.nim', '=', 'asy.student_nim');
+            })
+            ->leftJoin('professions AS p', function ($join) {
+                $join->on('asy.profession_id', '=', 'p.id');
+            })
+            ->leftJoin('alumni_user_surveys AS aus', function ($join) {
+                $join->on('s.nim', '=', 'aus.student_nim');
+            })
+            ->select([
+                DB::raw('YEAR(s.graduation_date) AS tahun_lulusan'),
+                DB::raw('COUNT(*) AS jumlah_lulusan'),
+                DB::raw('SUM(s.has_filled_survey = 1) AS jumlah_lulusan_yg_terlacak'),
+                DB::raw('SUM(s.has_filled_survey = 1 AND p.category_id IS NULL = "Bidang Infokom") AS jumlah_profesi_infokom'),
+                DB::raw('SUM(s.has_filled_survey = 1 AND (p.category_id IS NULL OR p.category_id != "Bidang Infokom")) AS jumlah_profesi_non_infokom'),
+                DB::raw('SUM(CASE WHEN aus.institution_scale = "internasional" THEN 1 ELSE 0 END) AS institution_scale_internasional'),
+                DB::raw('SUM(CASE WHEN aus.institution_scale = "nasional" THEN 1 ELSE 0 END) AS institution_scale_nasional'),
+                DB::raw('SUM(CASE WHEN aus.institution_scale = "wirausaha" THEN 1 ELSE 0 END) AS institution_scale_wirausaha')
+            ])
+            ->groupByRaw('YEAR(s.graduation_date)')
+            ->orderByRaw('YEAR(s.graduation_date)')
+            ->get();
+        return response()->json($data);
+    }
+    
     public function waitperiodData()
     {
         $data = DB::table('students as s')
