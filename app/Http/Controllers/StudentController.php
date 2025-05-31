@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StudentSurveyUnfilledExport;
 use App\Imports\StudentImport;
 use App\Models\ProgramStudy;
 use App\Models\Student;
@@ -9,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Exception;
 
 class StudentController extends Controller
 {
@@ -122,5 +124,14 @@ class StudentController extends Controller
                 ->with('error', 'Terjadi kesalahan saat mengimport data: ' . $e->getMessage())
                 ->withInput();
         }
+    }
+
+    /**
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
+    public function exportStudentUnfilled(Request $request)
+    {
+        return Excel::download(new StudentSurveyUnfilledExport, 'mahasiswa-belum-isi-survey.xlsx');
     }
 }
