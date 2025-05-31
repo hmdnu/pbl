@@ -74,7 +74,7 @@ class DashboardController extends Controller
         $finalData = $top10->toArray();
 
         if ($othersPercentage > 0) {
-            $finalData[] = (object) [
+            $finalData[] = (object)[
                 'institution_name' => 'Lainnya',
                 'percentage' => round($othersPercentage, 2)
             ];
@@ -82,6 +82,7 @@ class DashboardController extends Controller
 
         return response()->json($finalData);
     }
+
     public function waitperiodData()
     {
         $data = DB::table('students as s')
@@ -96,9 +97,9 @@ class DashboardController extends Controller
             ->orderBy(DB::raw('YEAR(s.graduation_date)'), 'asc')
             ->get();
 
-        // return view('dashboard.wait-periode', compact('data'));
         return response()->json($data);
     }
+
     public function evaluation()
     {
         $columns = [
@@ -144,7 +145,7 @@ class DashboardController extends Controller
         }
 
         $finalData = $data->map(function ($item) {
-            return (object) [
+            return (object)[
                 'label' => $item->label,
                 'percentage' => $item->percentage,
             ];

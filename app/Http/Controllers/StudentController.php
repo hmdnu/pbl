@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\StudentImport;
 use App\Models\ProgramStudy;
 use App\Models\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
 {
@@ -100,6 +103,24 @@ class StudentController extends Controller
             return redirect()->back()->with('success', 'Mahasiswa berhasil dihapus');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data');
+        }
+    }
+
+    public function import(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'file' => 'required|file|mimes:xls,xlsx'
+            ]);
+
+            Excel::import(new StudentImport, $validated['file']);
+
+            return back()->with('success', 'Data mahasiswa berhasil diimport');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return back()
+                ->with('error', 'Terjadi kesalahan saat mengimport data: ' . $e->getMessage())
+                ->withInput();
         }
     }
 }

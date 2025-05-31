@@ -45,6 +45,9 @@ Route::middleware([AdminAuth::class])->group(function () {
         Route::view('/alumni-user-survey/unfilled', 'admin.dashboard.alumni_user_recap_unfilled');
     });
 
+    Route::view('/student/import', 'admin.student.import')->name('student.import');;
+    Route::post('/student/import', [StudentController::class, 'import'])->name('student.import.post');
+
     Route::resource('student', StudentController::class);
     Route::resource('study-program', StudyProgramController::class);
     Route::resource('admin', AdminController::class);

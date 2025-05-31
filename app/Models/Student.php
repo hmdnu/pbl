@@ -9,13 +9,14 @@ class Student extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'nim';
     public $incrementing = false;
+    protected $primaryKey = 'nim';
     protected $keyType = 'string';
 
     protected $fillable = [
         'nim',
         'name',
+        'email',
         'graduation_date',
         'program_study_date',
         'program_study_id',
