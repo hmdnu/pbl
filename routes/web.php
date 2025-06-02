@@ -31,7 +31,7 @@ Route::middleware([AdminAuth::class])->group(function () {
             Route::get('/spread', [DashboardController::class, 'spread'])->name('dashboard.data.spread');
             Route::get('/spread-table', [DashboardController::class, 'spreadTable'])->name('dashboard.data.spread-table');
             Route::get('/evaluation', [DashboardController::class, 'evaluation'])->name('dashboard.data.evaluation');
-            Route::get('/wait-period', [DashboardController::class, 'waitperiodData'])->name('dashboard.data.wait-periode');
+            Route::get('/wait-period', [DashboardController::class, 'waitPeriodData'])->name('dashboard.data.wait-periode');
             Route::get('/institution-type', [DashboardController::class, 'getInstitutionTypeSpread'])->name('dashboard.data.institution-type');
         });
 

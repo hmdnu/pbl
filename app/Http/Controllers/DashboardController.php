@@ -112,7 +112,7 @@ class DashboardController extends Controller
     }
 
 
-    public function waitperiodData()
+    public function waitPeriodData()
     {
         $data = DB::table('students as s')
             ->leftJoin('alumni_surveys as asy', 's.nim', '=', 'asy.student_nim')
