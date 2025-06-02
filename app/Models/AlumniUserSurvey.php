@@ -30,6 +30,6 @@ class AlumniUserSurvey extends Model
 
     public function alumniEvaluation()
     {
-        return $this->hasOne(AlumniEvaluation::class, 'alumni_evaluation_id');
+        return $this->hasOne(AlumniEvaluation::class, 'id');
     }
 }
