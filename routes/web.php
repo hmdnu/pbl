@@ -38,7 +38,8 @@ Route::middleware([AdminAuth::class])->group(function () {
 
         Route::prefix('/download')->group(function () {
             Route::get('/alumni-survey/recap', [AlumniSurveyController::class, 'exportAlumniSurveyRecap'])->name('dashboard.download.alumni-survey.recap');
-            Route::get('/alumni-user-survey/recap', [AlumniUserSurveyController::class, 'exportAlumniUserSurveyRecap'])->name('dashboard.download.alumni-user-survey.recap');
+            Route::get('/alumni-user-survey/recap', [AlumniSurveyController::class, 'exportAlumniUserSurveyRecap'])->name('dashboard.download.alumni-user-survey.recap');
+            Route::get('/alumni-survey/unfilled', [StudentController::class, 'exportStudentUnfilled'])->name('dashboard.alumni-survey.unfilled.export');;
         });
 
         Route::view('/alumni-survey/recap', 'admin.dashboard.alumni_recap');
@@ -46,6 +47,9 @@ Route::middleware([AdminAuth::class])->group(function () {
         Route::view('/alumni-survey/unfilled', 'admin.dashboard.alumni_recap_unfilled');
         Route::view('/alumni-user-survey/unfilled', 'admin.dashboard.alumni_user_recap_unfilled');
     });
+
+    Route::view('/student/import', 'admin.student.import')->name('student.import');;
+    Route::post('/student/import', [StudentController::class, 'import'])->name('student.import.post');
 
     Route::resource('student', StudentController::class);
     Route::resource('study-program', StudyProgramController::class);

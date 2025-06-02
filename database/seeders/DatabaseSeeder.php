@@ -15,13 +15,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             ProgramStudySeeder::class,
-            StudentSeeder::class,
+//            StudentSeeder::class,
             ProfessionCategorySeeder::class,
             ProfessionSeeder::class,
-            
-            AlumniSurveySeeder::class,
-            AlumniEvaluationSeeder::class,
-            AlumniUserSurveySeeder::class,
+
+//            AlumniSurveySeeder::class,
+//            AlumniEvaluationSeeder::class,
+//            AlumniUserSurveySeeder::class,
         ]);
     }
 }

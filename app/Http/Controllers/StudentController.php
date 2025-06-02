@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StudentSurveyUnfilledExport;
+use App\Imports\StudentImport;
 use App\Models\ProgramStudy;
 use App\Models\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Exception;
 
 class StudentController extends Controller
 {
@@ -101,5 +106,32 @@ class StudentController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data');
         }
+    }
+
+    public function import(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'file' => 'required|file|mimes:xls,xlsx'
+            ]);
+
+            Excel::import(new StudentImport, $validated['file']);
+
+            return back()->with('success', 'Data mahasiswa berhasil diimport');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return back()
+                ->with('error', 'Terjadi kesalahan saat mengimport data: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    /**
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
+    public function exportStudentUnfilled(Request $request)
+    {
+        return Excel::download(new StudentSurveyUnfilledExport, 'mahasiswa-belum-isi-survey.xlsx');
     }
 }

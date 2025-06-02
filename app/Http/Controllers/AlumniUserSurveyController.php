@@ -55,7 +55,6 @@ class AlumniUserSurveyController extends Controller
                 'curriculum_suggestion' => $validated['curriculum_suggestion'],
             ]);
 
-//            dd('ok');
             return redirect()->route('view.alumni.done');
         } catch (\Exception $e) {
             dd($e);
