@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AlumniUserSurveyRecapExport;
 use App\Models\AlumniEvaluation;
 use App\Models\AlumniUserSurvey;
 use App\Models\Student;
 use App\Models\UniqueUrl;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Exception;
 
 class AlumniUserSurveyController extends Controller
 {
@@ -78,5 +82,14 @@ class AlumniUserSurveyController extends Controller
             'unmet_competencies' => 'required',
             'curriculum_suggestion' => 'required|string',
         ]);
+    }
+
+    /**
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
+    public function exportAlumniUserSurveyRecap()
+    {
+        return Excel::download(new AlumniUserSurveyRecapExport, 'rekap-survey-pengguna-alumni.xlsx');
     }
 }

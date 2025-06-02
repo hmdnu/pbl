@@ -13,6 +13,7 @@ use App\Http\Controllers\StudyProgramController;
 use App\Http\Controllers\UniqueUrlController;
 use App\Http\Middleware\AdminAuth;
 use App\Http\Middleware\VerifyUserForm;
+use App\Models\AlumniUserSurvey;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
@@ -37,7 +38,7 @@ Route::middleware([AdminAuth::class])->group(function () {
 
         Route::prefix('/download')->group(function () {
             Route::get('/alumni-survey/recap', [AlumniSurveyController::class, 'exportAlumniSurveyRecap'])->name('dashboard.download.alumni-survey.recap');
-            Route::get('/alumni-user-survey/recap', [])->name('dashboard.download.alumni-user-survey.recap');
+            Route::get('/alumni-user-survey/recap', [AlumniUserSurveyController::class, 'exportAlumniUserSurveyRecap'])->name('dashboard.download.alumni-user-survey.recap');
         });
 
         Route::view('/alumni-survey/recap', 'admin.dashboard.alumni_recap');
