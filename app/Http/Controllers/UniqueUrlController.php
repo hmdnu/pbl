@@ -77,13 +77,13 @@ class UniqueUrlController extends Controller
         $uniqueCode = Str::random(8);
         $storedRole = $role === 'alumni-user' ? 'alumni_user' : $role;
 
-        UniqueUrl::create([
+        $uniqueUrl = UniqueUrl::create([
             'unique_code' => $uniqueCode,
             'role' => $storedRole,
             'nim' => $nim
         ]);
 
-        return "$host/survey/form/$role/$uniqueCode";
+        $uniqueUrlId = $uniqueUrl->id;
+        return "$host/survey/form/$role/$uniqueUrlId/$uniqueCode";
     }
-
 }

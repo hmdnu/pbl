@@ -8,7 +8,8 @@
             <h4 class="mb-0 text-center">Formulir Survei Alumni</h4>
 
             <div class="card-body bg-light">
-                <form action="{{ route('post.alumni.form', ['code' => $code]) }}" method="POST">
+                <form action="{{ route('post.alumni.form', ['uniqueUrlId' => $uniqueCodeId,'code' => $code]) }}"
+                      method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="nim" class="form-label">NIM</label>

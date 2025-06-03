@@ -8,7 +8,8 @@
             <h4 class="mb-0 text-center">Formulir Survei Pengguna Alumni</h4>
 
             <div class="card-body bg-light mt-3">
-                <form method="POST" action={{route('post.alumni-user.form', ['code' => $code])}}>
+                <form method="POST"
+                      action={{route('post.alumni-user.form', ['uniqueUrlId'=> $uniqueUrlId,'code' => $code])}}>
                     @csrf
                     <div class="mb-3">
                         <label for="student-nim" class="form-label">NIM Mahasiswa</label>
@@ -80,30 +81,31 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="institution-scope" class="form-label">Skala Instansi</label>
-                        <select name="institution_scope" id="institution-scope" class="form-select">
+                        <label for="institution-scale" class="form-label">Skala Instansi</label>
+                        <select name="institution_scale" id="institution-scale" class="form-select">
                             <option selected disabled>Pilih skala instansi</option>
-                            <option value="nasional" {{ old('institution_scope') == 'nasional' ? 'selected' : '' }}>
+                            <option value="nasional" {{ old('institution_scale') == 'nasional' ? 'selected' : '' }}>
                                 Nasional
                             </option>
                             <option
-                                value="internasional" {{ old('institution_scope') == 'internasional' ? 'selected' : '' }}>
+                                value="internasional" {{ old('institution_scale') == 'internasional' ? 'selected' : '' }}>
                                 Internasional
                             </option>
-                            <option value="wirausaha" {{ old('institution_scope') == 'wirausaha' ? 'selected' : '' }}>
+                            <option value="wirausaha" {{ old('institution_scale') == 'wirausaha' ? 'selected' : '' }}>
                                 Wirausaha
                             </option>
                         </select>
-                        @error('institution_scope')
+                        @error('institution_scale')
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
                     <div class="mb-3">
-                        <label for="location" class="form-label">Alamat Instansi</label>
-                        <input type="text" name="location" class="form-control" id="location"
-                               value="{{ old('location') }}" required placeholder="Masukan lokasi anda">
-                        @error('location')
+                        <label for="institution_location" class="form-label">Alamat Instansi</label>
+                        <input type="text" name="institution_location" class="form-control" id="institution_location"
+                               value="{{ old('institution_location') }}" required
+                               placeholder="Masukan alamat instansi anda">
+                        @error('institution_location')
                         <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>

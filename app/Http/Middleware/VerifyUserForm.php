@@ -2,8 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\AlumniUserSurvey;
-use App\Models\Student;
 use App\Models\UniqueUrl;
 use Closure;
 use Illuminate\Http\Request;
@@ -13,45 +11,25 @@ class VerifyUserForm
 {
     /**
      * Handle an incoming request.
-     *
-     * @param Closure(Request): (Response) $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $role = str_contains($request->path(), 'alumni-user') ? 'alumni_user' : 'alumni';
+        $isAlumniUser = str_contains($request->path(), 'alumni-user');
+        $role = $isAlumniUser ? 'alumni_user' : 'alumni';
+        $uniqueCode = $request->route('code');
 
-        $exists = UniqueUrl::where('unique_code', $request->route('code'))
+        $uniqueUrl = UniqueUrl::where('unique_code', $uniqueCode)
             ->where('role', $role)
-            ->exists();
+            ->first();
 
-        if (!$exists) {
+        if (!$uniqueUrl) {
             return redirect('/');
         }
 
-        $nim = UniqueUrl::where('unique_code', $request->route('code'))->first();
-
-        if ($role === 'alumni') {
-            return $this->handleAlumni($request, $next, $nim->nim);
-        }
-
-        return $this->handleAlumniUser($request, $next, $nim->nim);
-    }
-
-    private function handleAlumni(Request $request, Closure $next, string $nim)
-    {
-        $student = Student::find($nim);
-        if ($student->has_filled_survey) {
+        if ($uniqueUrl->is_submitted) {
             return redirect()->route('view.alumni.done');
         }
-        return $next($request);
-    }
 
-    private function handleAlumniUser(Request $request, Closure $next, string $nim)
-    {
-        $exist = AlumniUserSurvey::where('student_nim', $nim)->exists();
-        if ($exist) {
-            return redirect()->route('view.alumni.done');
-        }
         return $next($request);
     }
 }

@@ -7,7 +7,8 @@
         <div class="card w-100 p-3">
             <h4 class="mb-0 text-center">Formulir Survei Alumni</h4>
             <div class="card-body bg-light">
-                <form action="{{ route('post.alumni.form.2', ['code' => $code]) }}" method="POST">
+                <form action="{{ route('post.alumni.form.2', ['uniqueUrlId' => $uniqueUrlId,'code' => $code]) }}"
+                      method="POST">
                     @csrf
 
                     <div class="mb-3">
