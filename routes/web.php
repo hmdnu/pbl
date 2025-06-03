@@ -38,7 +38,8 @@ Route::middleware([AdminAuth::class])->group(function () {
         Route::prefix('/download')->group(function () {
             Route::get('/alumni-survey/recap', [AlumniSurveyController::class, 'exportAlumniSurveyRecap'])->name('dashboard.download.alumni-survey.recap');
             Route::get('/alumni-user-survey/recap', [])->name('dashboard.download.alumni-user-survey.recap');
-            Route::get('/alumni-survey/unfilled', [StudentController::class, 'exportStudentUnfilled'])->name('dashboard.alumni-survey.unfilled.export');;
+            Route::get('/alumni-survey/unfilled', [StudentController::class, 'exportStudentUnfilled'])->name('dashboard.alumni-survey.unfilled.export');
+            Route::get('/alumni-user-survey/unfilled', [AlumniUserSurveyController::class, 'exportUnfilledRecap'])->name('dashboard.alumni-user-survey.unfilled.export');
         });
 
         Route::view('/alumni-survey/recap', 'admin.dashboard.alumni_recap');
@@ -69,13 +70,14 @@ Route::prefix('/survey')->group(function () {
     });
 
     Route::middleware([VerifyUserForm::class])->group(function () {
-        Route::get('/form/alumni-user/{code}', [AlumniUserSurveyController::class, 'index'])->name('view.alumni-user.form');
-        Route::post('/form/alumni-user/{code}', [AlumniUserSurveyController::class, 'store'])->name('post.alumni-user.form');
+        Route::get('/form/alumni-user/{uniqueUrlId}/{code}', [AlumniUserSurveyController::class, 'index'])->name('view.alumni-user.form');
+        Route::post('/form/alumni-user/{uniqueUrlId}/{code}', [AlumniUserSurveyController::class, 'store'])->name('post.alumni-user.form');
 
-        Route::get('/form/alumni/{code}', [AlumniSurveyController::class, 'index'])->name('view.alumni.form');
-        Route::post('/form/alumni/{code}', [AlumniSurveyController::class, 'storeFirstForm'])->name('post.alumni.form');
-        Route::get('/form/alumni/{code}/2/{category}', [AlumniSurveyController::class, 'secondForm'])->name('view.alumni.form.2');
-        Route::post('/form/alumni/{code}/2', [AlumniSurveyController::class, 'storeSecondForm'])->name('post.alumni.form.2');
+        Route::get('/form/alumni/{uniqueUrlId}/{code}', [AlumniSurveyController::class, 'index'])->name('view.alumni.form');
+        Route::post('/form/alumni/{uniqueUrlId}/{code}', [AlumniSurveyController::class, 'storeFirstForm'])->name('post.alumni.form');
+
+        Route::get('/form/alumni/{uniqueUrlId}/{code}/2/{category}', [AlumniSurveyController::class, 'secondForm'])->name('view.alumni.form.2');
+        Route::post('/form/alumni/{uniqueUrlId}/{code}/2', [AlumniSurveyController::class, 'storeSecondForm'])->name('post.alumni.form.2');
     });
 
     Route::view('/done', 'survey.alumni.done')->name('view.alumni.done');

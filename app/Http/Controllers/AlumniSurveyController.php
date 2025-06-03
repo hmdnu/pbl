@@ -18,19 +18,20 @@ class AlumniSurveyController extends Controller
 {
     private const string FORM_1 = 'alumni_form_step_1';
 
-    public function index(Request $request, string $code)
+    public function index(Request $request, string $uniqueCodeId, string $code)
     {
         $nim = UniqueUrl::where('unique_code', $code)->first();
         $student = Student::find($nim->nim);
 
         return view('survey.alumni.form', [
             'code' => $code,
+            'uniqueCodeId' => $uniqueCodeId,
             'student' => $student,
             'profession_categories' => ProfessionCategory::all()
         ]);
     }
 
-    public function secondForm(Request $request, string $code, string $category)
+    public function secondForm(Request $request, string $uniqueUrlId, string $code, string $category)
     {
         $categoryId = $request->query('category-id');
         $professions = Profession::where('category_id', $categoryId)->get();
@@ -44,11 +45,12 @@ class AlumniSurveyController extends Controller
             'code' => $code,
             'category' => Helper::toLabel($category),
             'professions' => $professions,
+            'uniqueUrlId' => $uniqueUrlId,
             'graduationDate' => $graduationDate['graduation-date']
         ]);
     }
 
-    public function storeFirstForm(Request $request, string $code)
+    public function storeFirstForm(Request $request, string $uniqueUrlId, string $code)
     {
         $validated = $request->validate([
             'name' => ['required', 'string'],
@@ -64,11 +66,14 @@ class AlumniSurveyController extends Controller
             $professionCategoryName = Helper::toKebabCase($professionCategory->name);
 
             if ($professionCategoryName !== 'belum-bekerja') {
-                session([
-                    self::FORM_1 => $validated
+                session([self::FORM_1 => $validated]);
+
+                return redirect()->route('view.alumni.form.2', [
+                    'uniqueUrlId' => $uniqueUrlId, // ✅ Corrected key
+                    'code' => $code,
+                    'category' => $professionCategoryName,
+                    'category-id' => $validated['profession-category']
                 ]);
-                return redirect()
-                    ->route('view.alumni.form.2', ['code' => $code, 'category' => $professionCategoryName, 'category-id' => $validated['profession-category']]);
             }
 
             // save survey unemployed
@@ -81,6 +86,8 @@ class AlumniSurveyController extends Controller
 
             //  update has submitting
             Student::where('nim', $validated['nim'])->update(['has_filled_survey' => true]);
+            UniqueUrl::find($uniqueUrlId)->update(['is_submitted' => true]);
+            
             return redirect()->route('view.alumni.done');
         } catch (\Exception $error) {
             Log::error('Failed to save survey (alumni 1st form)', ['error' => $error->getMessage()]);
@@ -88,7 +95,7 @@ class AlumniSurveyController extends Controller
         }
     }
 
-    public function storeSecondForm(Request $request, string $code)
+    public function storeSecondForm(Request $request, string $uniqueUrlId, string $code)
     {
         $validated = $this->validateSecondForm($request);
         $firstFormData = session(self::FORM_1);
@@ -110,6 +117,8 @@ class AlumniSurveyController extends Controller
                 'supervisor_email' => $validated['supervisor_email'],
             ]);
             Student::where('nim', $firstFormData['nim'])->update(['has_filled_survey' => true]);
+            UniqueUrl::find($uniqueUrlId)->update(['is_submitted' => true]);
+
             return redirect()->route('view.alumni.done');
         } catch (\Exception $error) {
             Log::error('Failed to save survey (alumni 2nd form)', ['error' => $error->getMessage()]);

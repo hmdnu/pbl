@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AlumniUserSurveyUnfilled;
 use App\Models\AlumniEvaluation;
 use App\Models\AlumniUserSurvey;
 use App\Models\Student;
 use App\Models\UniqueUrl;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Exception;
 
 class AlumniUserSurveyController extends Controller
 {
-    public function index(string $code)
+    public function index(string $uniqueUrlId, string $code)
     {
         $nim = UniqueUrl::where('unique_code', $code)->first();
         $student = Student::find($nim->nim);
@@ -19,14 +22,14 @@ class AlumniUserSurveyController extends Controller
         return view('survey.alumni_users.form', [
             'code' => $code,
             'student' => $student,
+            'uniqueUrlId' => $uniqueUrlId,
             'program_study' => $programStudy->programStudy->name,
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, string $uniqueUrlId, string $code)
     {
         $validated = $this->validateForm($request);
-
         try {
             $evaluation = AlumniEvaluation::create([
                 'student_nim' => $validated['student_nim'],
@@ -44,6 +47,8 @@ class AlumniUserSurveyController extends Controller
                 'name' => $validated['name'],
                 'institution_type' => $validated['institution_type'],
                 'institution_name' => $validated['institution_name'],
+                'institution_location' => $validated['institution_location'],
+                'institution_scale' => $validated['institution_scale'],
                 'position' => $validated['position'],
                 'email' => $validated['email'],
                 'student_nim' => $validated['student_nim'],
@@ -63,6 +68,8 @@ class AlumniUserSurveyController extends Controller
             'name' => 'required|string|max:255',
             'institution_type' => 'required|string',
             'institution_name' => 'required|string|max:255',
+            'institution_location' => 'required|string|max:255',
+            'institution_scale' => 'required|string',
             'position' => 'required|string|max:255',
             'email' => 'required|email',
             'student_nim' => 'required|string|max:50',
@@ -77,5 +84,14 @@ class AlumniUserSurveyController extends Controller
             'unmet_competencies' => 'required',
             'curriculum_suggestion' => 'required|string',
         ]);
+    }
+
+    /**
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
+    public function exportUnfilledRecap(Request $request)
+    {
+        return Excel::download(new AlumniUserSurveyUnfilled, 'rekap-pengguna-alumni-belum-isi-survey.xlsx');
     }
 }
