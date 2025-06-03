@@ -37,8 +37,8 @@ Route::middleware([AdminAuth::class])->group(function () {
 
         Route::prefix('/download')->group(function () {
             Route::get('/alumni-survey/recap', [AlumniSurveyController::class, 'exportAlumniSurveyRecap'])->name('dashboard.download.alumni-survey.recap');
-            Route::get('/alumni-user-survey/recap', [])->name('dashboard.download.alumni-user-survey.recap');
-            Route::get('/alumni-survey/unfilled', [StudentController::class, 'exportStudentUnfilled'])->name('dashboard.alumni-survey.unfilled.export');
+            Route::get('/alumni-user-survey/recap', [AlumniUserSurveyController::class, 'exportAlumniUserSurveyRecap'])->name('dashboard.download.alumni-user-survey.recap');
+            Route::get('/alumni-survey/unfilled', [StudentController::class, 'exportStudentUnfilled'])->name('dashboard.alumni-survey.unfilled.export');;
             Route::get('/alumni-user-survey/unfilled', [AlumniUserSurveyController::class, 'exportUnfilledRecap'])->name('dashboard.alumni-user-survey.unfilled.export');
         });
 

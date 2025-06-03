@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\AlumniUserSurveyUnfilled;
+use App\Exports\AlumniUserSurveyRecapExport;
 use App\Models\AlumniEvaluation;
 use App\Models\AlumniUserSurvey;
 use App\Models\Student;
@@ -10,6 +11,7 @@ use App\Models\UniqueUrl;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Exception;
+use Illuminate\Support\Facades\Log;
 
 class AlumniUserSurveyController extends Controller
 {
@@ -93,5 +95,14 @@ class AlumniUserSurveyController extends Controller
     public function exportUnfilledRecap(Request $request)
     {
         return Excel::download(new AlumniUserSurveyUnfilled, 'rekap-pengguna-alumni-belum-isi-survey.xlsx');
+    }
+
+    /**
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
+    public function exportAlumniUserSurveyRecap()
+    {
+        return Excel::download(new AlumniUserSurveyRecapExport, 'rekap-survey-pengguna-alumni.xlsx');
     }
 }
