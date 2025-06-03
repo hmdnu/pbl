@@ -11,6 +11,7 @@ async function getAllData() {
     try {
         const response = await fetch("/dashboard/data/evaluation");
         const json = await response.json();
+        console.log(json);
         return json;
     } catch (error) {
         console.error("Error fetching evaluation data:", error);
@@ -26,7 +27,7 @@ async function showChartsAndTable() {
         communication: "Kemampuan berkomunikasi",
         self_development: "Pengembangan diri",
         leadership: "Kepemimpinan",
-        work_ethic: "Etos Kerja",
+        work_ethic: "Etos Kerja"
     };
 
     const data = await getAllData();
@@ -53,10 +54,10 @@ async function showChartsAndTable() {
                         {
                             data: percentages,
                             backgroundColor: labels.map(() => getRandomColor()),
-                            hoverOffset: 4,
-                        },
-                    ],
-                },
+                            hoverOffset: 4
+                        }
+                    ]
+                }
             });
         }
 
@@ -79,7 +80,7 @@ function getPercentageByLabel(dataArray, label) {
     return found ? found.percentage : 0;
 }
 
-(async function () {
+(async function() {
     "use strict";
     feather.replace({ "aria-hidden": "true" });
 

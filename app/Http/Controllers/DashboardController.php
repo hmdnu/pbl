@@ -153,10 +153,10 @@ class DashboardController extends Controller
     private function getEvaluationData($column)
     {
         $labelMap = [
-            1 => 'Sangat Baik',
-            2 => 'Baik',
-            3 => 'Cukup',
-            4 => 'Kurang',
+            'Sangat Baik' => 'Sangat Baik',
+            'Baik' => 'Baik',
+            'Cukup' => 'Cukup',
+            'Kurang' => 'Kurang',
         ];
 
         $data = DB::table('alumni_evaluations')
