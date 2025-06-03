@@ -2,31 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\AlumniUserSurveyUnfilled;
 use App\Exports\AlumniUserSurveyRecapExport;
+use App\Exports\AlumniUserSurveyUnfilled;
 use App\Models\AlumniEvaluation;
 use App\Models\AlumniUserSurvey;
 use App\Models\Student;
 use App\Models\UniqueUrl;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpSpreadsheet\Exception;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AlumniUserSurveyController extends Controller
 {
     public function index(string $uniqueUrlId, string $code)
     {
-        $nim = UniqueUrl::where('unique_code', $code)->first();
-        $student = Student::find($nim->nim);
-        $programStudy = Student::with('programStudy')->where('nim', $nim->nim)->first();
+        try {
+            $nim = UniqueUrl::where('unique_code', $code)->first();
+            $student = Student::find($nim->nim);
+            $programStudy = Student::with('programStudy')->where('nim', $nim->nim)->first();
 
-        return view('survey.alumni_users.form', [
-            'code' => $code,
-            'student' => $student,
-            'uniqueUrlId' => $uniqueUrlId,
-            'program_study' => $programStudy->programStudy->name,
-        ]);
+            return view('survey.alumni_users.form', [
+                'code' => $code,
+                'student' => $student,
+                'uniqueUrlId' => $uniqueUrlId,
+                'program_study' => $programStudy->programStudy->name,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to load survey (alumni user)', ['error' => $e->getMessage()]);
+            return back()->withErrors(['error' => 'Gagal memuat data, silahkan coba lagi']);
+        }
     }
 
     public function store(Request $request, string $uniqueUrlId, string $code)
@@ -60,7 +64,8 @@ class AlumniUserSurveyController extends Controller
 
             return redirect()->route('view.alumni.done');
         } catch (\Exception $e) {
-            dd($e);
+            Log::error('Failed to save survey (alumni user)', ['error' => $e->getMessage()]);
+            return back()->withInput()->withErrors(['error' => 'Gagal menyimpan data, silahkan coba lagi']);
         }
     }
 
@@ -88,21 +93,24 @@ class AlumniUserSurveyController extends Controller
         ]);
     }
 
-    /**
-     * @throws Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     */
+
     public function exportUnfilledRecap(Request $request)
     {
-        return Excel::download(new AlumniUserSurveyUnfilled, 'rekap-pengguna-alumni-belum-isi-survey.xlsx');
+        try {
+            return Excel::download(new AlumniUserSurveyUnfilled, 'rekap-pengguna-alumni-belum-isi-survey.xlsx');
+        } catch (\Exception $e) {
+            Log::error('Failed to export unfilled recap (alumni user)', ['error' => $e->getMessage()]);;
+            return back()->withErrors(['error' => 'Gagal mengunduh data, silahkan coba lagi']);
+        }
     }
 
-    /**
-     * @throws Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     */
     public function exportAlumniUserSurveyRecap()
     {
-        return Excel::download(new AlumniUserSurveyRecapExport, 'rekap-survey-pengguna-alumni.xlsx');
+        try {
+            return Excel::download(new AlumniUserSurveyRecapExport, 'rekap-survey-pengguna-alumni.xlsx');
+        } catch (\Exception $e) {
+            Log::error('Failed to export recap (alumni user)', ['error' => $e->getMessage()]);;
+            return back()->withErrors(['error' => 'Gagal mengunduh data, silahkan coba lagi']);
+        }
     }
 }
