@@ -7,16 +7,35 @@ function getRandomColor() {
     return color;
 }
 
+function getQueryParams() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+        prodi: params.get("prodi"),
+        tahun: params.get("tahun"),
+    };
+}
+
 async function getAllData() {
     try {
-        const response = await fetch("/dashboard/data/evaluation");
-        const json = await response.json();
-        console.log(json);
-        return json;
+        const { prodi, tahun } = getQueryParams();
+        const url = new URL(
+            "/dashboard/data/evaluation",
+            window.location.origin
+        );
+        if (prodi) url.searchParams.append("prodi", prodi);
+        if (tahun) url.searchParams.append("tahun", tahun);
+
+        const response = await fetch(url);
+        return await response.json();
     } catch (error) {
         console.error("Error fetching evaluation data:", error);
         return {};
     }
+}
+
+function getPercentageByLabel(dataArray, label) {
+    const found = dataArray.find((d) => d.label === label);
+    return found ? found.percentage : 0;
 }
 
 async function showChartsAndTable() {
@@ -27,41 +46,46 @@ async function showChartsAndTable() {
         communication: "Kemampuan berkomunikasi",
         self_development: "Pengembangan diri",
         leadership: "Kepemimpinan",
-        work_ethic: "Etos Kerja"
+        work_ethic: "Etos Kerja",
     };
 
     const data = await getAllData();
     const tableBody = document.querySelector("#rekap-table-body");
+    tableBody.innerHTML = "";
 
     let index = 1;
+
     for (const [key, value] of Object.entries(data)) {
-        const labels = [];
-        const percentages = [];
+        const chartLabels = value.map((v) => v.label);
+        const chartPercentages = value.map((v) => v.percentage);
 
-        value.forEach((item) => {
-            labels.push(item.label);
-            percentages.push(item.percentage);
-        });
-
-        // Render Chart
-        const ctx = document.getElementById(`chart-${key}`);
-        if (ctx) {
-            new Chart(ctx, {
+        const canvas = document.getElementById(`chart-${key}`);
+        if (canvas) {
+            new Chart(canvas, {
                 type: "pie",
                 data: {
-                    labels: labels,
+                    labels: chartLabels,
                     datasets: [
                         {
-                            data: percentages,
-                            backgroundColor: labels.map(() => getRandomColor()),
-                            hoverOffset: 4
-                        }
-                    ]
-                }
+                            data: chartPercentages,
+                            backgroundColor: chartLabels.map(() =>
+                                getRandomColor()
+                            ),
+                            hoverOffset: 4,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                        },
+                    },
+                },
             });
         }
 
-        // Build table row
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${index++}</td>
@@ -75,14 +99,8 @@ async function showChartsAndTable() {
     }
 }
 
-function getPercentageByLabel(dataArray, label) {
-    const found = dataArray.find((d) => d.label === label);
-    return found ? found.percentage : 0;
-}
-
-(async function() {
+(async function () {
     "use strict";
     feather.replace({ "aria-hidden": "true" });
-
     await showChartsAndTable();
 })();
