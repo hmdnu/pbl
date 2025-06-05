@@ -7,81 +7,128 @@ function getRandomColor() {
     return color;
 }
 
+function getQueryParams() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+        prodi: params.get("prodi"),
+        tahun: params.get("tahun"),
+    };
+}
+
 async function getData() {
     try {
-        const data = await fetch("/dashboard/data/spread");
-        return await data.json();
+        const { prodi, tahun } = getQueryParams();
+        const url = new URL("/dashboard/data/spread", window.location.origin);
+        if (prodi) url.searchParams.append("prodi", prodi);
+        if (tahun) url.searchParams.append("tahun", tahun);
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error("Gagal mengambil data spread profesi");
+        return await response.json();
     } catch (error) {
         console.error(error);
+        return [];
     }
 }
 
+let professionChartInstance = null;
 async function showData() {
-    const datasets = {
-        labels: [],
-        data: []
-    };
     const data = await getData();
-    data.map((d) => {
-        datasets.labels.push(d.profession_name);
-        datasets.data.push(d.percentage);
-    });
+    const labels = data.map((d) => d.profession_name);
+    const values = data.map((d) => d.percentage);
+    const colors = labels.map(() => getRandomColor());
 
-    const backgroundColors = datasets.labels.map(() => getRandomColor());
+    const ctx = document.getElementById("sebaran-profesi-lulusan");
+    if (!ctx) {
+        console.warn("Canvas #sebaran-profesi-lulusan tidak ditemukan");
+        return;
+    }
 
-    // Graphs
-    var ctx = document.getElementById("sebaran-profesi-lulusan");
-    // eslint-disable-next-line no-unused-vars
-    new Chart(ctx, {
+    if (professionChartInstance) {
+        professionChartInstance.destroy();
+    }
+
+    professionChartInstance = new Chart(ctx, {
         type: "pie",
         data: {
-            labels: datasets.labels,
+            labels,
             datasets: [
                 {
-                    data: datasets.data,
-                    backgroundColor: backgroundColors,
-                    hoverOffset: 4
-                }
-            ]
-        }
+                    data: values,
+                    backgroundColor: colors,
+                    hoverOffset: 4,
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "right",
+                },
+            },
+        },
     });
 }
 
 async function getInstitutionTypeData() {
     try {
-        const response = await fetch("/dashboard/data/institution-type");
+        const { prodi, tahun } = getQueryParams();
+        const url = new URL(
+            "/dashboard/data/institution-type",
+            window.location.origin
+        );
+        if (prodi) url.searchParams.append("prodi", prodi);
+        if (tahun) url.searchParams.append("tahun", tahun);
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error("Gagal mengambil data jenis institusi");
         return await response.json();
     } catch (error) {
         console.error(error);
+        return [];
     }
 }
 
+let institutionChartInstance = null;
 async function showInstitutionTypeData() {
-    const datasets = {
-        labels: [],
-        data: []
-    };
     const data = await getInstitutionTypeData();
-    data.map((d) => {
-        datasets.labels.push(d.institution_name);
-        datasets.data.push(d.percentage);
-    });
-
-    const backgroundColors = datasets.labels.map(() => getRandomColor());
+    const labels = data.map((d) => d.institution_name);
+    const values = data.map((d) => d.percentage);
+    const colors = labels.map(() => getRandomColor());
 
     const ctx = document.getElementById("sebaran-institution-type");
-    new Chart(ctx, {
+    if (!ctx) {
+        console.warn("Canvas #sebaran-institution-type tidak ditemukan");
+        return;
+    }
+
+    if (institutionChartInstance) {
+        institutionChartInstance.destroy();
+    }
+
+    institutionChartInstance = new Chart(ctx, {
         type: "pie",
         data: {
-            labels: datasets.labels,
+            labels,
             datasets: [
                 {
-                    data: datasets.data,
-                    backgroundColor: backgroundColors,
-                    hoverOffset: 4
-                }
-            ]
-        }
+                    data: values,
+                    backgroundColor: colors,
+                    hoverOffset: 4,
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "right",
+                },
+            },
+        },
     });
 }
 
