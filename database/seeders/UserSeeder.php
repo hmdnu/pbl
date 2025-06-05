@@ -3,10 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class UserSeeder extends Seeder
 {
@@ -28,6 +27,20 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('12345'),
                 'created_at' => $now,
                 'updated_at' => $now,
+            ],
+            [
+                'nip' => '111',
+                'name' => 'Tatang',
+                'password' => Hash::make('12345'),
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            [
+                'nip' => '112',
+                'name' => 'Yusuf',
+                'password' => Hash::make('12345'),
+                'created_at' => $now,
+                'updated_at' => $now
             ]
         ];
 
