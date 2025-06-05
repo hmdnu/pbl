@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'progamStudy')
+@section('title', 'Manajemen Prodi')
 
 @section('admin-content')
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-form-create">Add Item</button>
