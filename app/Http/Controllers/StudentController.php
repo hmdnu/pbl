@@ -17,12 +17,26 @@ class StudentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $students = Student::with('programStudy')->get();
+        $prodi = $request->input('prodi');
+        $tahun = $request->input('tahun');
+
+        $query = Student::with('programStudy');
+
+        if ($prodi) {
+            $query->where('program_study_id', $prodi);
+        }
+
+        if ($tahun) {
+            $query->whereYear('graduation_date', $tahun);
+        }
+
+        $students = $query->get();
+
         $program_studies = ProgramStudy::all();
 
-        return view('admin.student.index', compact('students', 'program_studies'));
+        return view('admin.student.index', compact('students', 'program_studies', 'prodi', 'tahun'));
     }
 
     /**
@@ -37,7 +51,7 @@ class StudentController extends Controller
             'program_study_id' => 'required|exists:program_studies,id',
         ]);
 
-        $validated['graduation_date'] = Carbon::parse('dd-mm-yyyy');
+        $validated['graduation_date'] = Carbon::parse($request->graduation_date);
 
         try {
             Student::create($validated);

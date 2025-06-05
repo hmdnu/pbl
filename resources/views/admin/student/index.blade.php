@@ -3,12 +3,42 @@
 @section('title', 'Manajemen Mahasiswa')
 
 @section('admin-content')
-    <div class="d-flex gap-2 align-items-center">
-        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-form-create">Tambah
-            Mahasiswa
+    <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+    <div>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-form-create">
+            Tambah Mahasiswa
         </button>
-        <a href="{{route('student.import')}}" class="btn btn-primary mb-3">Import Excel
+        <a href="{{ route('student.import') }}" class="btn btn-primary">
+            Import Excel
         </a>
+    </div>
+
+    <form method="GET" action="{{ route('student.index') }}" class="d-flex align-items-center gap-2 flex-wrap">
+        <div>
+            <select name="prodi" class="form-select">
+                <option value="">Semua Prodi</option>
+                @foreach ($program_studies as $program)
+                    <option value="{{ $program->id }}" {{ request('prodi') == $program->id ? 'selected' : '' }}>
+                        {{ $program->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div>
+            <select name="tahun" class="form-select">
+                <option value="">Semua Tahun</option>
+                @php
+                    $currentYear = date('Y');
+                    for ($i = $currentYear; $i >= $currentYear - 3; $i--) {
+                        echo '<option value="'.$i.'"'.(request('tahun') == $i ? ' selected' : '').'>'.$i.'</option>';
+                }
+                @endphp
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </form>
     </div>
 
     {{-- Modal Tambah Mahasiswa --}}
