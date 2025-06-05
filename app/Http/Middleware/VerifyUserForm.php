@@ -26,10 +26,18 @@ class VerifyUserForm
             return redirect('/');
         }
 
-        if ($uniqueUrl->is_submitted) {
+        $nim = $uniqueUrl->nim;
+
+        // ✅ Check if *any* entry with the same NIM has been submitted
+        $alreadySubmitted = UniqueUrl::where('nim', $nim)
+            ->where('is_submitted', true)
+            ->exists();
+
+        if ($alreadySubmitted) {
             return redirect()->route('view.alumni.done');
         }
 
         return $next($request);
     }
+
 }
