@@ -3,11 +3,10 @@
     background-color: #111c44;
     height: 100vh;
     position: fixed;
-    top: 90px;
     left: 0;
     width: 220px;
     overflow-y: auto;
-    padding-top: 1rem;
+    padding-top: 2rem;
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.4);
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -30,7 +29,7 @@
     align-items: center;
     gap: 10px;
     padding: 0.6rem 1rem;
-    color: #e0e3ed;
+    color: #595959;
     font-size: 0.95rem;
     font-weight: 500;
     border-radius: 6px;
