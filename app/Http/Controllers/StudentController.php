@@ -10,29 +10,21 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpSpreadsheet\Exception;
 
 class StudentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the students with optional filters.
      */
     public function index(Request $request)
     {
         $prodi = $request->input('prodi');
         $tahun = $request->input('tahun');
 
-        $query = Student::with('programStudy');
-
-        if ($prodi) {
-            $query->where('program_study_id', $prodi);
-        }
-
-        if ($tahun) {
-            $query->whereYear('graduation_date', $tahun);
-        }
-
-        $students = $query->get();
+        $students = Student::with('programStudy')
+            ->when($prodi, fn($q) => $q->where('program_study_id', $prodi))
+            ->when($tahun, fn($q) => $q->whereYear('graduation_date', $tahun))
+            ->get();
 
         $program_studies = ProgramStudy::all();
 
@@ -40,7 +32,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created student in storage.
      */
     public function store(Request $request)
     {
@@ -51,42 +43,43 @@ class StudentController extends Controller
             'program_study_id' => 'required|exists:program_studies,id',
         ]);
 
-        $validated['graduation_date'] = Carbon::parse($request->graduation_date);
+        $validated['graduation_date'] = Carbon::parse($validated['graduation_date']);
 
         try {
             Student::create($validated);
-            return redirect()->back()->with('success', 'Mahasiswa berhasil ditambahkan');
+            return redirect()->route('students.index')->with('success', 'Mahasiswa berhasil ditambahkan.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data');
+            Log::error('Student store error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new student.
      */
     public function create()
     {
-        //
+        
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified student.
      */
     public function show(string $id)
     {
-        //
+
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified student.
      */
     public function edit(string $id)
     {
-        //
+
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified student in storage.
      */
     public function update(Request $request, string $id)
     {
@@ -99,16 +92,19 @@ class StudentController extends Controller
             'program_study_id' => 'required|exists:program_studies,id',
         ]);
 
+        $validated['graduation_date'] = Carbon::parse($validated['graduation_date']);
+
         try {
             $student->update($validated);
-            return redirect()->back()->with('success', 'Data mahasiswa berhasil diperbarui');
+            return redirect()->route('students.index')->with('success', 'Data mahasiswa berhasil diperbarui.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengupdate data');
+            Log::error('Student update error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengupdate data.');
         }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified student from storage.
      */
     public function destroy(string $id)
     {
@@ -116,36 +112,40 @@ class StudentController extends Controller
             $student = Student::where('nim', $id)->firstOrFail();
             $student->delete();
 
-            return redirect()->back()->with('success', 'Mahasiswa berhasil dihapus');
+            return redirect()->route('students.index')->with('success', 'Mahasiswa berhasil dihapus.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data');
+            Log::error('Student delete error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data.');
         }
     }
 
+    /**
+     * Import students from an Excel file.
+     */
     public function import(Request $request)
     {
+        $validated = $request->validate([
+            'file' => 'required|file|mimes:xls,xlsx',
+        ]);
+
         try {
-            $validated = $request->validate([
-                'file' => 'required|file|mimes:xls,xlsx'
-            ]);
-
             Excel::import(new StudentImport, $validated['file']);
-
-            return back()->with('success', 'Data mahasiswa berhasil diimport');
+            return back()->with('success', 'Data mahasiswa berhasil diimport.');
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
+            Log::error('Student import error: ' . $e->getMessage());
             return back()
                 ->with('error', 'Terjadi kesalahan saat mengimport data: ' . $e->getMessage())
                 ->withInput();
         }
     }
 
-    /**
-     * @throws Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     */
     public function exportStudentUnfilled(Request $request)
     {
-        return Excel::download(new StudentSurveyUnfilledExport, 'mahasiswa-belum-isi-survey.xlsx');
+        try {
+            return Excel::download(new StudentSurveyUnfilledExport, 'mahasiswa-belum-isi-survey.xlsx');
+        } catch (\Exception $e) {
+            \Log::error('Export error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengekspor data: ' . $e->getMessage());
+        }
     }
 }

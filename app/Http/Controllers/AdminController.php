@@ -21,9 +21,9 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nip' => 'required|string|min:3|unique:users,nip',
+            'nip' => 'required|string|min:3|unique:users,nip|max:250',
             'name' => 'required|string|max:100',
-            'password' => 'required|min:5',
+            'password' => 'required|min:5|max:250',
         ]);
 
         User::create([

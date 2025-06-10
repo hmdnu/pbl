@@ -12,7 +12,6 @@ use App\Models\UniqueUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpSpreadsheet\Exception;
 
 class AlumniSurveyController extends Controller
 {
@@ -20,63 +19,72 @@ class AlumniSurveyController extends Controller
 
     public function index(Request $request, string $uniqueCodeId, string $code)
     {
-        $nim = UniqueUrl::where('unique_code', $code)->first();
-        $student = Student::find($nim->nim);
+        try {
+            $nim = UniqueUrl::where('unique_code', $code)->firstOrFail();
+            $student = Student::findOrFail($nim->nim);
 
-        return view('survey.alumni.form', [
-            'code' => $code,
-            'uniqueCodeId' => $uniqueCodeId,
-            'student' => $student,
-            'profession_categories' => ProfessionCategory::all()
-        ]);
+            return view('survey.alumni.form', [
+                'code' => $code,
+                'uniqueCodeId' => $uniqueCodeId,
+                'student' => $student,
+                'profession_categories' => ProfessionCategory::all()
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error loading alumni form view', ['error' => $e->getMessage()]);
+            abort(404, 'Data tidak ditemukan.');
+        }
     }
 
     public function secondForm(Request $request, string $uniqueUrlId, string $code, string $category)
     {
-        $categoryId = $request->query('category-id');
-        $professions = Profession::where('category_id', $categoryId)->get();
-        $graduationDate = session(self::FORM_1);
+        try {
+            $categoryId = $request->query('category-id');
+            $professions = Profession::where('category_id', $categoryId)->get();
+            $graduationDate = session(self::FORM_1);
 
-        if (!$graduationDate) {
-            return redirect('/');
+            if (!$graduationDate) {
+                return redirect('/')->withErrors(['error' => 'Sesi kadaluarsa, silakan mulai kembali.']);
+            }
+
+            return view('survey.alumni.second-form', [
+                'code' => $code,
+                'category' => Helper::toLabel($category),
+                'professions' => $professions,
+                'uniqueUrlId' => $uniqueUrlId,
+                'graduationDate' => $graduationDate['graduation-date']
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error loading second alumni form', ['error' => $e->getMessage()]);
+            return back()->withErrors(['error' => 'Terjadi kesalahan.']);
         }
-
-        return view('survey.alumni.second-form', [
-            'code' => $code,
-            'category' => Helper::toLabel($category),
-            'professions' => $professions,
-            'uniqueUrlId' => $uniqueUrlId,
-            'graduationDate' => $graduationDate['graduation-date']
-        ]);
     }
 
     public function storeFirstForm(Request $request, string $uniqueUrlId, string $code)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string'],
-            'nim' => ['required', 'string'],
-            'email' => ['required', 'email'],
-            'phone' => ['required', 'string'],
-            'graduation-date' => ['required',],
+            'name' => ['required', 'string', 'max:255'],
+            'nim' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'phone' => ['required', 'string', 'max:255'],
+            'graduation-date' => ['required'],
             'profession-category' => ['required']
         ]);
 
         try {
-            $professionCategory = ProfessionCategory::find($validated['profession-category']);
+            $professionCategory = ProfessionCategory::findOrFail($validated['profession-category']);
             $professionCategoryName = Helper::toKebabCase($professionCategory->name);
 
             if ($professionCategoryName !== 'belum-bekerja') {
                 session([self::FORM_1 => $validated]);
 
                 return redirect()->route('view.alumni.form.2', [
-                    'uniqueUrlId' => $uniqueUrlId, // ✅ Corrected key
+                    'uniqueUrlId' => $uniqueUrlId,
                     'code' => $code,
                     'category' => $professionCategoryName,
                     'category-id' => $validated['profession-category']
                 ]);
             }
 
-            // save survey unemployed
             AlumniSurvey::create([
                 'student_nim' => $validated['nim'],
                 'profession_category_id' => $validated['profession-category'],
@@ -84,14 +92,13 @@ class AlumniSurveyController extends Controller
                 'email' => $validated['email']
             ]);
 
-            //  update has submitting
             Student::where('nim', $validated['nim'])->update(['has_filled_survey' => true]);
-            UniqueUrl::find($uniqueUrlId)->update(['is_submitted' => true]);
-            
+            UniqueUrl::findOrFail($uniqueUrlId)->update(['is_submitted' => true]);
+
             return redirect()->route('view.alumni.done');
-        } catch (\Exception $error) {
-            Log::error('Failed to save survey (alumni 1st form)', ['error' => $error->getMessage()]);
-            return back()->withInput()->withErrors(['error' => 'Gagal menyimpan data, silahkan coba lagi']);
+        } catch (\Exception $e) {
+            Log::error('Failed to store first alumni form', ['error' => $e->getMessage()]);
+            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data.']);
         }
     }
 
@@ -99,7 +106,12 @@ class AlumniSurveyController extends Controller
     {
         $validated = $this->validateSecondForm($request);
         $firstFormData = session(self::FORM_1);
+
         try {
+            if (!$firstFormData) {
+                return redirect('/')->withErrors(['error' => 'Sesi tidak valid, silakan mulai ulang.']);
+            }
+
             AlumniSurvey::create([
                 'student_nim' => $firstFormData['nim'],
                 'profession_category_id' => $firstFormData['profession-category'],
@@ -116,13 +128,14 @@ class AlumniSurveyController extends Controller
                 'supervisor_position' => $validated['supervisor_position'],
                 'supervisor_email' => $validated['supervisor_email'],
             ]);
+
             Student::where('nim', $firstFormData['nim'])->update(['has_filled_survey' => true]);
-            UniqueUrl::find($uniqueUrlId)->update(['is_submitted' => true]);
+            UniqueUrl::findOrFail($uniqueUrlId)->update(['is_submitted' => true]);
 
             return redirect()->route('view.alumni.done');
-        } catch (\Exception $error) {
-            Log::error('Failed to save survey (alumni 2nd form)', ['error' => $error->getMessage()]);
-            return back()->withInput()->withErrors(['error' => 'Gagal menyimpan data, silahkan coba lagi']);
+        } catch (\Exception $e) {
+            Log::error('Failed to store second alumni form', ['error' => $e->getMessage()]);
+            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data.']);
         }
     }
 
@@ -132,15 +145,15 @@ class AlumniSurveyController extends Controller
             'profession' => ['required'],
             'graduation_date' => ['required'],
             'first_work_date' => ['required'],
-            'institution_type' => ['required'],
+            'institution_type' => ['required', 'string', 'max:255'],
             'institution_name' => ['required', 'string', 'max:255'],
             'institution_location' => ['required', 'string', 'max:255'],
-            'institution_scale' => ['required'],
+            'institution_scale' => ['required', 'string', 'max:255'],
             'first_institution_work_date' => ['required'],
             'supervisor_name' => ['required', 'string', 'max:255'],
             'supervisor_position' => ['required', 'string', 'max:255'],
-            'supervisor_email' => ['required', 'email'],
-            'waiting_period' => ['required']
+            'supervisor_email' => ['required', 'email', 'max:255'],
+            'waiting_period' => ['required', 'string', 'max:255']
         ], [
             'profession.required' => 'Profesi wajib diisi.',
             'graduation_date.required' => 'Tanggal lulus wajib diisi',
@@ -157,12 +170,14 @@ class AlumniSurveyController extends Controller
         ]);
     }
 
-    /**
-     * @throws Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     */
+
     public function exportAlumniSurveyRecap()
     {
-        return Excel::download(new AlumniSurveyRecapExport, 'rekap-survey-alumni.xlsx');
+        try {
+            return Excel::download(new AlumniSurveyRecapExport, 'rekap-survey-alumni.xlsx');
+        } catch (\Exception $e) {
+            Log::error('Export alumni survey failed', ['error' => $e->getMessage()]);
+            return back()->withErrors(['error' => 'Gagal mengunduh rekap data.']);
+        }
     }
 }

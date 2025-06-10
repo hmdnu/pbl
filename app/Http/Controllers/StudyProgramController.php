@@ -4,83 +4,77 @@ namespace App\Http\Controllers;
 
 use App\Models\ProgramStudy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class StudyProgramController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return view("admin.program_study.index", ["programstudies" => ProgramStudy::all()]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
-        ProgramStudy::create([
-            'name' => $request->input('name'),
-        ]);
+        try {
+            ProgramStudy::create([
+                'name' => $request->input('name'),
+            ]);
 
-        return back()->with('success', 'Data berhasil ditambahkan');
+            return back()->with('success', 'Data berhasil ditambahkan');
+        } catch (\Exception $e) {
+            Log::error('Gagal menyimpan program studi: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat menambahkan data');
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
-        $programStudy = ProgramStudy::findOrFail($id);
-        $programStudy->update([
-            'name' => $request->input('name'),
-        ]);
+        try {
+            $programStudy = ProgramStudy::findOrFail($id);
+            $programStudy->update([
+                'name' => $request->input('name'),
+            ]);
 
-        return back()->with('success', 'Data berhasil diperbarui');
+            return back()->with('success', 'Data berhasil diperbarui');
+        } catch (\Exception $e) {
+            Log::error('Gagal memperbarui program studi: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat memperbarui data');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        $programStudy = ProgramStudy::findOrFail($id);
-        $programStudy->delete();
+        try {
+            $programStudy = ProgramStudy::findOrFail($id);
+            $programStudy->delete();
 
-        return back()->with('success', 'Data berhasil dihapus');
-
+            return back()->with('success', 'Data berhasil dihapus');
+        } catch (\Exception $e) {
+            Log::error('Gagal menghapus program studi: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat menghapus data');
+        }
     }
 }

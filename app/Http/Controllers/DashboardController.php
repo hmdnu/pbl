@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
@@ -31,176 +33,195 @@ class DashboardController extends Controller
 
     public function spread(Request $request)
     {
-        $prodi = $request->input('prodi');
-        $tahun = $request->input('tahun');
-        $tahunRange = $tahun ? range($tahun - 3, $tahun) : null;
+        try {
+            $prodi = $request->input('prodi');
+            $tahun = $request->input('tahun');
+            $tahunRange = $tahun ? range($tahun - 3, $tahun) : null;
 
-        $query = DB::table('alumni_surveys as asy')
-            ->join('students as s', 'asy.student_nim', '=', 's.nim')
-            ->join('professions as p', 'asy.profession_id', '=', 'p.id');
+            $query = DB::table('alumni_surveys as asy')
+                ->join('students as s', 'asy.student_nim', '=', 's.nim')
+                ->join('professions as p', 'asy.profession_id', '=', 'p.id');
 
-        if ($prodi) {
-            $query->where('s.program_study_id', $prodi);
+            if ($prodi) {
+                $query->where('s.program_study_id', $prodi);
+            }
+            if ($tahunRange) {
+                $query->whereIn(DB::raw('LEFT(s.graduation_date, 4)'), $tahunRange);
+            }
+
+            $total = $query->count();
+            if ($total === 0) {
+                return response()->json([]);
+            }
+
+            $rawData = $query
+                ->select(
+                    'p.name as profession_name',
+                    DB::raw("ROUND(COUNT(*) * 100.0 / $total, 2) as percentage")
+                )
+                ->groupBy('p.name')
+                ->orderByDesc('percentage')
+                ->get();
+
+            $top10 = $rawData->take(10);
+            $othersPercentage = $rawData->slice(10)->sum('percentage');
+
+            $finalData = $top10->toArray();
+            if ($othersPercentage > 0) {
+                $finalData[] = (object)[
+                    'profession_name' => 'Lainnya',
+                    'percentage' => round($othersPercentage, 2)
+                ];
+            }
+
+            return response()->json($finalData);
+        } catch (Exception $e) {
+            Log::error('Error in spread method', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Terjadi kesalahan saat memuat data.'], 500);
         }
-        if ($tahunRange) {
-            $query->whereIn(DB::raw('LEFT(s.graduation_date, 4)'), $tahunRange);
-        }
-
-        $total = $query->count();
-
-        if ($total === 0) {
-            return response()->json([]);
-        }
-
-        $rawData = $query
-            ->select(
-                'p.name as profession_name',
-                DB::raw("ROUND(COUNT(*) * 100.0 / $total, 2) as percentage")
-            )
-            ->groupBy('p.name')
-            ->orderByDesc('percentage')
-            ->get();
-
-        $top10 = $rawData->take(10);
-        $othersPercentage = $rawData->slice(10)->sum('percentage');
-
-        $finalData = $top10->toArray();
-        if ($othersPercentage > 0) {
-            $finalData[] = (object)[
-                'profession_name' => 'Lainnya',
-                'percentage' => round($othersPercentage, 2)
-            ];
-        }
-
-        return response()->json($finalData);
     }
 
     public function getInstitutionTypeSpread(Request $request)
     {
-        $prodi = $request->input('prodi');
-        $tahun = $request->input('tahun');
-        $tahunRange = $tahun ? range($tahun - 3, $tahun) : null;
+        try {
+            $prodi = $request->input('prodi');
+            $tahun = $request->input('tahun');
+            $tahunRange = $tahun ? range($tahun - 3, $tahun) : null;
 
-        $query = DB::table('alumni_surveys as asy')
-            ->join('students as s', 'asy.student_nim', '=', 's.nim');
+            $query = DB::table('alumni_surveys as asy')
+                ->join('students as s', 'asy.student_nim', '=', 's.nim');
 
-        if ($prodi) {
-            $query->where('s.program_study_id', $prodi);
+            if ($prodi) {
+                $query->where('s.program_study_id', $prodi);
+            }
+            if ($tahunRange) {
+                $query->whereIn(DB::raw('LEFT(s.graduation_date, 4)'), $tahunRange);
+            }
+
+            $total = $query->count();
+            if ($total === 0) {
+                return response()->json([]);
+            }
+
+            $rawData = $query
+                ->select(
+                    'asy.institution_type as institution_name',
+                    DB::raw("ROUND(COUNT(*) * 100.0 / $total, 2) as percentage")
+                )
+                ->groupBy('asy.institution_type')
+                ->orderByDesc('percentage')
+                ->get();
+
+            $top10 = $rawData->take(10);
+            $othersPercentage = $rawData->slice(10)->sum('percentage');
+
+            $finalData = $top10->toArray();
+            if ($othersPercentage > 0) {
+                $finalData[] = (object)[
+                    'institution_name' => 'Lainnya',
+                    'percentage' => round($othersPercentage, 2)
+                ];
+            }
+
+            return response()->json($finalData);
+        } catch (Exception $e) {
+            Log::error('Error in getInstitutionTypeSpread', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Terjadi kesalahan saat memuat data.'], 500);
         }
-
-        if ($tahunRange) {
-            $query->whereIn(DB::raw('LEFT(s.graduation_date, 4)'), $tahunRange);
-        }
-
-        $total = $query->count();
-
-        if ($total === 0) {
-            return response()->json([]);
-        }
-
-        $rawData = $query
-            ->select(
-                'asy.institution_type as institution_name',
-                DB::raw("ROUND(COUNT(*) * 100.0 / $total, 2) as percentage")
-            )
-            ->groupBy('asy.institution_type')
-            ->orderByDesc('percentage')
-            ->get();
-
-        $top10 = $rawData->take(10);
-        $othersPercentage = $rawData->slice(10)->sum('percentage');
-
-        $finalData = $top10->toArray();
-        if ($othersPercentage > 0) {
-            $finalData[] = (object)[
-                'institution_name' => 'Lainnya',
-                'percentage' => round($othersPercentage, 2)
-            ];
-        }
-
-        return response()->json($finalData);
     }
 
     public function spreadTable(Request $request)
     {
-        $prodi = $request->input('prodi');
-        $tahun = $request->input('tahun');
-        $tahunRange = $tahun ? range($tahun - 3, $tahun) : null;
+        try {
+            $prodi = $request->input('prodi');
+            $tahun = $request->input('tahun');
+            $tahunRange = $tahun ? range($tahun - 3, $tahun) : null;
 
-        $query = DB::table('students as s')
-            ->leftJoin('alumni_surveys AS asy', 's.nim', '=', 'asy.student_nim')
-            ->leftJoin('professions AS p', 'asy.profession_id', '=', 'p.id')
-            ->leftJoin('alumni_user_surveys AS aus', 's.nim', '=', 'aus.student_nim');
+            $query = DB::table('students as s')
+                ->leftJoin('alumni_surveys AS asy', 's.nim', '=', 'asy.student_nim')
+                ->leftJoin('professions AS p', 'asy.profession_id', '=', 'p.id')
+                ->leftJoin('alumni_user_surveys AS aus', 's.nim', '=', 'aus.student_nim');
 
-        if ($prodi) {
-            $query->where('s.program_study_id', $prodi);
+            if ($prodi) {
+                $query->where('s.program_study_id', $prodi);
+            }
+            if ($tahunRange) {
+                $query->whereIn(DB::raw('LEFT(s.graduation_date, 4)'), $tahunRange);
+            }
+
+            $data = $query
+                ->select([
+                    DB::raw('LEFT(s.graduation_date, 4) AS tahun_lulusan'),
+                    DB::raw('COUNT(s.nim) AS jumlah_lulusan'),
+                    DB::raw('SUM(CASE WHEN s.has_filled_survey = 1 THEN 1 ELSE 0 END) AS jumlah_lulusan_yg_terlacak'),
+                    DB::raw("SUM(CASE WHEN s.has_filled_survey = 1 AND p.category_id = 1 THEN 1 ELSE 0 END) AS jumlah_profesi_infokom"),
+                    DB::raw("SUM(CASE WHEN s.has_filled_survey = 1 AND (p.category_id IS NULL OR p.category_id != 1) THEN 1 ELSE 0 END) AS jumlah_profesi_non_infokom"),
+                    DB::raw("SUM(CASE WHEN aus.institution_scale = 'internasional' THEN 1 ELSE 0 END) AS institution_scale_internasional"),
+                    DB::raw("SUM(CASE WHEN aus.institution_scale = 'nasional' THEN 1 ELSE 0 END) AS institution_scale_nasional"),
+                    DB::raw("SUM(CASE WHEN aus.institution_scale = 'wirausaha' THEN 1 ELSE 0 END) AS institution_scale_wirausaha")
+                ])
+                ->groupBy(DB::raw('LEFT(s.graduation_date, 4)'))
+                ->orderBy(DB::raw('LEFT(s.graduation_date, 4)'))
+                ->get();
+
+            return response()->json($data);
+        } catch (Exception $e) {
+            Log::error('Error in spreadTable', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Terjadi kesalahan saat memuat data.'], 500);
         }
-
-        if ($tahunRange) {
-            $query->whereIn(DB::raw('LEFT(s.graduation_date, 4)'), $tahunRange);
-        }
-
-        $data = $query
-            ->select([
-                DB::raw('LEFT(s.graduation_date, 4) AS tahun_lulusan'),
-                DB::raw('COUNT(s.nim) AS jumlah_lulusan'),
-                DB::raw('SUM(CASE WHEN s.has_filled_survey = 1 THEN 1 ELSE 0 END) AS jumlah_lulusan_yg_terlacak'),
-                DB::raw("SUM(CASE WHEN s.has_filled_survey = 1 AND p.category_id = 1 THEN 1 ELSE 0 END) AS jumlah_profesi_infokom"),
-                DB::raw("SUM(CASE WHEN s.has_filled_survey = 1 AND (p.category_id IS NULL OR p.category_id != 1) THEN 1 ELSE 0 END) AS jumlah_profesi_non_infokom"),
-                DB::raw("SUM(CASE WHEN aus.institution_scale = 'internasional' THEN 1 ELSE 0 END) AS institution_scale_internasional"),
-                DB::raw("SUM(CASE WHEN aus.institution_scale = 'nasional' THEN 1 ELSE 0 END) AS institution_scale_nasional"),
-                DB::raw("SUM(CASE WHEN aus.institution_scale = 'wirausaha' THEN 1 ELSE 0 END) AS institution_scale_wirausaha")
-            ])
-            ->groupBy(DB::raw('LEFT(s.graduation_date, 4)'))
-            ->orderBy(DB::raw('LEFT(s.graduation_date, 4)'))
-            ->get();
-
-        return response()->json($data);
     }
-
 
     public function waitPeriodData()
     {
-        $data = DB::table('students as s')
-            ->leftJoin('alumni_surveys as asy', 's.nim', '=', 'asy.student_nim')
-            ->selectRaw('
-            YEAR(s.graduation_date) AS tahun_lulusan,
-            COUNT(*) AS jumlah_lulusan,
-            COUNT(CASE WHEN s.has_filled_survey = 1 THEN 1 END) AS jumlah_lulusan_yg_terlacak,
-            ROUND(COALESCE(AVG(CASE WHEN s.has_filled_survey = 1 THEN asy.waiting_period ELSE NULL END), 0), 2) AS rata2_masa_tunggu
-        ')
-            ->groupBy(DB::raw('YEAR(s.graduation_date)'))
-            ->orderBy(DB::raw('YEAR(s.graduation_date)'), 'asc')
-            ->get();
+        try {
+            $data = DB::table('students as s')
+                ->leftJoin('alumni_surveys as asy', 's.nim', '=', 'asy.student_nim')
+                ->selectRaw('
+                    YEAR(s.graduation_date) AS tahun_lulusan,
+                    COUNT(*) AS jumlah_lulusan,
+                    COUNT(CASE WHEN s.has_filled_survey = 1 THEN 1 END) AS jumlah_lulusan_yg_terlacak,
+                    ROUND(COALESCE(AVG(CASE WHEN s.has_filled_survey = 1 THEN asy.waiting_period ELSE NULL END), 0), 2) AS rata2_masa_tunggu
+                ')
+                ->groupBy(DB::raw('YEAR(s.graduation_date)'))
+                ->orderBy(DB::raw('YEAR(s.graduation_date)'), 'asc')
+                ->get();
 
-        return response()->json($data);
+            return response()->json($data);
+        } catch (Exception $e) {
+            Log::error('Error in waitPeriodData', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Terjadi kesalahan saat memuat data.'], 500);
+        }
     }
 
     public function evaluation(Request $request)
     {
-        $prodi = $request->input('prodi');
-        $tahun = $request->input('tahun');
-        $tahunRange = $tahun ? range($tahun - 3, $tahun) : null;
+        try {
+            $prodi = $request->input('prodi');
+            $tahun = $request->input('tahun');
+            $tahunRange = $tahun ? range($tahun - 3, $tahun) : null;
 
-        $columns = [
-            'teamwork',
-            'it_expertise',
-            'foreign_language',
-            'communication',
-            'self_development',
-            'leadership',
-            'work_ethic',
-        ];
+            $columns = [
+                'teamwork',
+                'it_expertise',
+                'foreign_language',
+                'communication',
+                'self_development',
+                'leadership',
+                'work_ethic',
+            ];
 
-        $result = [];
-        foreach ($columns as $col) {
-            $result[$col] = $this->getEvaluationData($col, $prodi, $tahunRange);
+            $result = [];
+            foreach ($columns as $col) {
+                $result[$col] = $this->getEvaluationData($col, $prodi, $tahunRange);
+            }
+
+            return response()->json($result);
+        } catch (Exception $e) {
+            Log::error('Error in evaluation method', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Terjadi kesalahan saat memuat data.'], 500);
         }
-
-        return response()->json($result);
     }
 
-    // Helper function evaluation
     private function getEvaluationData($column, $prodi = null, $tahunRange = null)
     {
         $labelMap = [
@@ -231,13 +252,11 @@ class DashboardController extends Controller
             $item->percentage = $total ? round(($item->total / $total) * 100, 2) : 0;
         }
 
-        $finalData = $data->map(function ($item) {
+        return collect($data)->map(function ($item) {
             return (object)[
                 'label' => $item->label,
                 'percentage' => $item->percentage,
             ];
-        })->toArray();
-
-        return collect($finalData);
+        });
     }
 }
