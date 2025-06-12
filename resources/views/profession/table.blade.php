@@ -33,14 +33,18 @@
                         method="POST"
                     >
                         @csrf
-                        @method('PUT') {{-- pakai PUT agar Laravel mengenali update --}}
+                        @method('PUT')
 
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Kategori Id</span>
-                            <input type="text" class="form-control" name="category_id"
-                                   value="{{ $profession->category_id }}" required>
+                            <span class="input-group-text">Kategori</span>
+                            <select class="form-select" name="category_id">
+                                @foreach($professionCategory as $pc)
+                                    @if ($pc->id !== 3)
+                                        <option value="{{ $pc->id }}">{{ $pc->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                         </div>
-
                         <div class="input-group mb-3">
                             <span class="input-group-text">Nama</span>
                             <input type="text" class="form-control" name="name"

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profession;
+use App\Models\ProfessionCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -22,7 +23,9 @@ class ProfessionController extends Controller
                 )
                 ->get();
 
-            return view("profession.index", compact('professions'));
+            $professionCategory = ProfessionCategory::all();
+
+            return view("profession.index", ['professions' => $professions, 'professionCategory' => $professionCategory]);
         } catch (\Exception $e) {
             Log::error("Gagal mengambil data profesi: " . $e->getMessage());
             return back()->with('error', 'Gagal memuat data profesi.');
