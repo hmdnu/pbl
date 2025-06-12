@@ -20,6 +20,7 @@
             }
         }
     </style>
+    @vite('resources/css/dashboard.css')
 @endpush
 
 @section('content')

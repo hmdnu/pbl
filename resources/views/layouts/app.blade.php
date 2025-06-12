@@ -8,7 +8,6 @@
     <title> @yield('title') </title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="{{ asset('bootstrap/dist/css/bootstrap.min.css') }}">
-    @vite('resources/css/dashboard.css')
     @vite('resources/js/app.js')
     @stack('heads')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
